@@ -34,7 +34,7 @@ const Header = () => {
 
       {/* Desktop Navigation */}
 
-      <div className='sm:flex sm:justify-between sm:items-center hidden mb-2'>
+      <div className='sm:flex sm:justify-between sm:items-center hidden mb-2.5'>
         <div className='flex items-center space-x-9'>
           <Link href="/" className=''>
             {/* <Image src={assets.logo} alt="Blog Logo" width={100} height={100}/> */}
@@ -59,8 +59,8 @@ const Header = () => {
         </div>
 
         <div className='flex gap-2'>
-          <button className='light-btn'>Sign In</button>
-          <button className='colored-btn'>Get Started</button>
+          <button className='light-btn'><Link href="/sign-in">Sign In</Link></button>
+          <button className='colored-btn'><Link href="/register">Get Started</Link></button>
         </div>
       </div>
       <div class="h-px bg-gray-300 mb-4"></div>

@@ -1,8 +1,9 @@
 import React from 'react'
+import AuthForm from '@/components/AuthForm'
 
 const register = () => {
   return (
-    <div>register</div>
+    <AuthForm title={"Sign Up"} buttonTitle={"Register"}/>
   )
 }
 
