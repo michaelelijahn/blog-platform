@@ -1,5 +1,6 @@
 import Provider from "@/components/Provider";
 import "./globals.css";
+import { AuthProvider } from "@/components/AuthContext";
 
 export const metadata = {
   title: "Blog Project",
@@ -11,13 +12,15 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="">
         <Provider>
-          <div className="main">
-            <div className="gradient"/>
-          </div>
+          <AuthProvider>
+            <div className="main">
+              <div className="gradient"/>
+            </div>
 
-          <div className="app">
-            {children}
-          </div>
+            <div className="app">
+                {children}
+            </div>
+          </AuthProvider>
         </Provider>
       </body>
     </html>

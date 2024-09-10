@@ -3,11 +3,16 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { useState } from 'react'
+import { signOut, useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { assets } from '@/assets/assets'
+import { useAuth } from './AuthContext'
 
 const Header = () => {
-
   const [toggleDropdown, setToggleDropdown] = useState(false);
-  const isUserLoggedIn = true;
+  const { data : session } = useSession();
+  const { isUserLoggedIn, setIsUserLoggedIn } = useAuth();
+  const router = useRouter();
 
   return (
     <nav className='w-full pt-3 sm:mb-16 font-semibold'>
@@ -25,8 +30,23 @@ const Header = () => {
               <li className='dropdown-link'><Link href="/about-us" className='' onClick={() => setToggleDropdown(false)}>About Us</Link></li>
               <li className='dropdown-link'><Link href="/advantages" className='' onClick={() => setToggleDropdown(false)}>Advantages</Link></li>
               <li className='dropdown-link'><Link href="/blog" className='' onClick={() => setToggleDropdown(false)}>Blog</Link></li>
-              <button className='light-btn w-full' onClick={() => setToggleDropdown(false)}><Link href="/sign-in">Sign In</Link></button>
-              <button className='colored-btn w-full' onClick={() => setToggleDropdown(false)}><Link href="/register">Get Started</Link></button>
+              {
+                session ? 
+                  <button className='light-btn w-full' onClick={() => {
+                    setToggleDropdown(false);
+                    if (isUserLoggedIn) {
+                      setIsUserLoggedIn(false);
+                    } else {
+                      signOut();
+                    }
+                    router.push("/")
+                  }}>Sign Out</button>
+                : 
+                <>
+                  <button className='light-btn w-full' onClick={() => setToggleDropdown(false)}><Link href="/sign-in">Sign In</Link></button>
+                  <button className='colored-btn w-full' onClick={() => setToggleDropdown(false)}><Link href="/register">Get Started</Link></button>
+                </>
+              }
             </ul>
           )}
         </div>
@@ -64,8 +84,27 @@ const Header = () => {
 
         <div className='flex gap-2'>
           {/* <Image/> */}
-          <button className='light-btn'><Link href="/sign-in">Sign In</Link></button>
-          <button className='colored-btn'><Link href="/register">Get Started</Link></button>
+          <h1>{isUserLoggedIn}</h1>
+          {session || isUserLoggedIn ?
+            <>
+              <button className='colored-btn' onClick={() => {
+                if (isUserLoggedIn) {
+                  setIsUserLoggedIn(false);
+                } else {
+                  signOut();
+                }
+                router.push("/");
+              }}>Sign Out</button>
+              <Link href="/profile">
+                <Image src={assets.profile_icon} width={40}/>
+              </Link>
+            </>
+            :
+            <>
+              <button className='light-btn'><Link href="/sign-in">Sign In</Link></button>
+              <button className='colored-btn'><Link href="/register">Get Started</Link></button>
+            </>
+          }
         </div>
       </div>
       <div class="h-px bg-gray-300 mb-4"></div>

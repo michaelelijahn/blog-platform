@@ -27,6 +27,7 @@ import email_icon from './email_icon.png'
 import upload_area from './upload_area.png'
 import google from './google.png'
 import apple from './apple.png'
+import github from './github.png'
 
 export const assets = {
     facebook_icon,
@@ -42,6 +43,7 @@ export const assets = {
     upload_area,
     google,
     apple,
+    github,
     }
 
     export const blog_data = [{
