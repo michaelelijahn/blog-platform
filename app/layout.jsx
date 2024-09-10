@@ -1,3 +1,4 @@
+import Provider from "@/components/Provider";
 import "./globals.css";
 
 export const metadata = {
@@ -9,15 +10,15 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="">
+        <Provider>
+          <div className="main">
+            <div className="gradient"/>
+          </div>
 
-        <div className="main">
-          <div className="gradient"/>
-        </div>
-
-        <div className="app">
-          {children}
-        </div>
-
+          <div className="app">
+            {children}
+          </div>
+        </Provider>
       </body>
     </html>
   );

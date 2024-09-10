@@ -84,11 +84,10 @@
 }
 
 .dropdown-link {
-    @apply text-sm text-gray-700 hover:text-gray-500 font-medium border-b-2;
+    @apply text-sm text-gray-700 hover:text-gray-500 font-medium border-b-2 hover:border-black hover:duration-300 hover:ease-out;
 }
   
-
 .form-input {
-    @apply w-[80vw] sm:w-[32vw] md:w-[40vw] lg:w-[32vw] flex rounded-lg mt-2 p-3 text-sm text-gray-500 outline-1;
+    @apply w-[80vw] sm:w-[32vw] md:w-[40vw] lg:w-[32vw] flex mt-2 p-3 text-sm rounded-lg text-gray-500 outline-1;
 }
   

@@ -35,30 +35,35 @@ const Header = () => {
       {/* Desktop Navigation */}
 
       <div className='sm:flex sm:justify-between sm:items-center hidden mb-2.5'>
-        <div className='flex items-center space-x-9'>
+        <div className='flex items-center md:justify-between space-x-4 lg:space-x-9'>
           <Link href="/" className=''>
             {/* <Image src={assets.logo} alt="Blog Logo" width={100} height={100}/> */}
             BlogLogo
           </Link>
 
-          <Link href="/" className=''>
+          <Link href="/" className='flex flex-col justify-center items-center group mb-1'>
             Overview
+            <span className=' w-full h-0.5 bg-black transform scale-x-0 origin-left transition-transform duration-300 ease-out group-hover:scale-x-100'></span>
           </Link>
 
-          <Link href="/about-us" className=''>
+          <Link href="/about-us" className='flex flex-col justify-center items-center group mb-1'>
             About Us
+            <span className=' w-full h-0.5 bg-black transform scale-x-0 origin-left transition-transform duration-300 ease-out group-hover:scale-x-100'></span>
           </Link>
 
-          <Link href="/advantages" className=''>
+          <Link href="/advantages" className='flex flex-col justify-center items-center group mb-1'>
             Advantages
+            <span className=' w-full h-0.5 bg-black transform scale-x-0 origin-left transition-transform duration-300 ease-out group-hover:scale-x-100'></span>
           </Link>
 
-          <Link href="/blog" className=''>
+          <Link href="/blog" className='flex flex-col justify-center items-center group mb-1'>
             Blog
+            <span className='w-full h-0.5 bg-black transform scale-x-0 origin-left transition-transform duration-300 ease-out group-hover:scale-x-100'></span>
           </Link>
         </div>
 
         <div className='flex gap-2'>
+          {/* <Image/> */}
           <button className='light-btn'><Link href="/sign-in">Sign In</Link></button>
           <button className='colored-btn'><Link href="/register">Get Started</Link></button>
         </div>
