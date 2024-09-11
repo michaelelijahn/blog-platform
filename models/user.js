@@ -1,6 +1,17 @@
 import { Schema, model, models } from "mongoose";
 
 const UserSchema = new Schema({
+  username: { 
+    type: String,
+    unique: [true, "Username already exists"],
+    required: [true, "Username is required"],
+    lowercase: true,
+    trim: true,
+    match: [
+      /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/,
+      'Please enter a valid username. It should be 1-30 characters long, and can only contain letters, numbers, underscores and periods. It cannot contain two consecutive periods or end with a period.'
+    ]
+  },
   email: {
     type: String,
     unique: [true, "Email already exists"],

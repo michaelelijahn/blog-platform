@@ -7,8 +7,13 @@ export const POST = async (req) => {
 
         await connectToDB();
 
+        // const usernameRegex = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
         const emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
         const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
+
+        // if (!usernameRegex.test(username)) {
+        //     return new Response(JSON.stringify('Please enter a valid username. It should be 1-30 characters long, and can only contain letters, numbers, underscores and periods. It cannot contain two consecutive periods or end with a period.'), { status: 400 });
+        // }
 
         if (!emailRegex.test(email)) {
             return new Response(JSON.stringify("Please enter a valid email address"), { status: 400 });
@@ -19,11 +24,12 @@ export const POST = async (req) => {
         }
 
         const userExists = await User.findOne({ email: email });
+        const { username } = userExists;
 
         if (userExists) {
-            return new Response(JSON.stringify(`User ${email} is successfully signed in.`), { status: 200 });
+            return new Response(JSON.stringify(`User ${username} is successfully signed in.`), { status: 200 });
         } else {
-            return new Response(JSON.stringify(`User ${email} does not exist.`), { status: 404 });
+            return new Response(JSON.stringify(`User ${username} with email ${email} does not exist.`), { status: 404 });
         }
     } catch (error) {
         return new Response(JSON.stringify(`Unable to register user, please try again later`), { status: 500 });
