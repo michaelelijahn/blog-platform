@@ -1,5 +1,6 @@
 import { connectToDB } from "@/app/utils/database";
 import User from "@/models/user";
+import UserProvider from "@/models/userProvider";
 
 export const POST = async (req) => {
     try {
@@ -7,13 +8,8 @@ export const POST = async (req) => {
 
         await connectToDB();
 
-        // const usernameRegex = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
         const emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
         const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
-
-        // if (!usernameRegex.test(username)) {
-        //     return new Response(JSON.stringify('Please enter a valid username. It should be 1-30 characters long, and can only contain letters, numbers, underscores and periods. It cannot contain two consecutive periods or end with a period.'), { status: 400 });
-        // }
 
         if (!emailRegex.test(email)) {
             return new Response(JSON.stringify("Please enter a valid email address"), { status: 400 });

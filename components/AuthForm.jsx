@@ -60,7 +60,7 @@ const AuthForm = ({ title, buttonTitle, api }) => {
   }
 
   return (
-    <div className='flex flex-col justify-start mt-32 py-5 min-w-[380px] w-[90vw] sm:w-[45vw] sm:h-[85vh] bg-slate-100 rounded-2xl shadow-md space-y-6'>
+    <div className='flex flex-col justify-start mt-32 py-5 min-w-[380px] w-[90vw] sm:w-[45vw] sm:h-[78vh] bg-slate-100 rounded-2xl shadow-md space-y-6'>
       <h1 className='text-4xl py-5 font-semibold text-center'>{title}</h1>
       <div className='flex flex-col justify-center items-center gap-3'>
         {title !== "Sign Up" ? null : <input type="text" placeholder='ex : johnDoe123' className='form-input' onChange={(e) => setUsername(e.target.value)} required />}
@@ -77,9 +77,9 @@ const AuthForm = ({ title, buttonTitle, api }) => {
       </div>
 
       <div className='flex flex-col justify-center items-center gap-4 w-full'>
-        <button onClick={() => {
+        {/* <button onClick={() => {
           signIn('github');
-          }} className='flex justify-center items-center gap-2 py-2 rounded-full border border-gray-300 bg-white px-5 text-gray-700 hover:bg-slate-200 w-[80vw] sm:w-[32vw] md:w-[40vw] lg:w-[32vw] font-semibold'><Image src={assets.github} width={25} height={25}/>Github</button>
+          }} className='flex justify-center items-center gap-2 py-2 rounded-full border border-gray-300 bg-white px-5 text-gray-700 hover:bg-slate-200 w-[80vw] sm:w-[32vw] md:w-[40vw] lg:w-[32vw] font-semibold'><Image src={assets.github} width={25} height={25}/>Github</button> */}
         <button onClick={() => {
           signIn('google');
           }} className='flex justify-center items-center gap-2 py-2 rounded-full border border-gray-300 bg-white px-5 text-gray-700 hover:bg-slate-200 w-[80vw] sm:w-[32vw] md:w-[40vw] lg:w-[32vw] font-semibold'><Image src={assets.google} width={25} height={25}/>Google</button>

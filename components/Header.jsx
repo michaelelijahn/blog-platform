@@ -96,7 +96,7 @@ const Header = () => {
                 router.push("/");
               }}>Sign Out</button>
               <Link href="/profile">
-                <Image src={assets.profile_icon} width={40}/>
+                <Image className='rounded-full' src={session && session.user ? session.user.image : assets.profile_icon} width={40} height={40}/>
               </Link>
             </>
             :
