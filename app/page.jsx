@@ -1,11 +1,21 @@
+"use client"
 import Blogs from "@/components/Blogs";
 import Header from "@/components/Header";
+import CreateIcon from '@mui/icons-material/Create';
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { useAuth } from "@/components/AuthContext";
 
 export default function Home() {
+
+
+  const { data : session } = useSession();
+  const { isUserLoggedIn, setIsUserLoggedIn } = useAuth();
+
   return (
     <>
       <Header/>
-      <div className="flex flex-col justify-center mt-10 mb-20 sm:my-15 gap-5">
+      <div className="flex flex-col justify-center mt-5 mb-20 sm:my-15 gap-5">
         <h1 className="header-text text-center sm:text-start">
           Your Hub for Fresh Ideas 
           <span className="blue-gradient"> and Bold Perspectives</span>
@@ -15,6 +25,7 @@ export default function Home() {
         </p>
         <Blogs/>
       </div>
+      {(session || isUserLoggedIn) && <Link href="/create-blog" className="fixed bottom-5 right-8 sm:right-14 sm:bottom-10 md:right-6 md:bottom-10 shadow-xl bg-blue-700 hover:bg-blue-800 p-4 text-center rounded-full" ><CreateIcon sx={{color: "white", fontSize: 35}}/></Link> };
     </>
   );
 }

@@ -1,8 +1,7 @@
 "use client"
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { assets } from '@/assets/assets'
@@ -14,8 +13,12 @@ const Header = () => {
   const { isUserLoggedIn, setIsUserLoggedIn } = useAuth();
   const router = useRouter();
 
+  useEffect(() => {
+    setIsUserLoggedIn(false);
+  }, [session]);
+
   return (
-    <nav className='w-full pt-3 sm:mb-16 font-semibold'>
+    <nav className='w-full pt-3 sm:mb-12 font-semibold'>
       {/* Mobile Navigation */}
       <div className='sm:hidden flex justify-between items-center relative px-4 mb-2 text-2xl'>
         <Link href="/" className=''>
@@ -31,7 +34,7 @@ const Header = () => {
               <li className='dropdown-link'><Link href="/advantages" className='' onClick={() => setToggleDropdown(false)}>Advantages</Link></li>
               <li className='dropdown-link'><Link href="/blog" className='' onClick={() => setToggleDropdown(false)}>Blog</Link></li>
               {
-                session ? 
+                session || isUserLoggedIn ? 
                   <button className='light-btn w-full' onClick={() => {
                     setToggleDropdown(false);
                     if (isUserLoggedIn) {

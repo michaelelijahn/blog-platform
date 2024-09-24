@@ -91,3 +91,6 @@
     @apply w-[80vw] sm:w-[32vw] md:w-[40vw] lg:w-[32vw] flex mt-2 p-3 text-sm rounded-lg text-gray-500 outline-1;
 }
   
+.glassmorphism {
+    @apply rounded-xl border border-gray-200 bg-white/20 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur p-5;
+}

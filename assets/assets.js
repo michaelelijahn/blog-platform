@@ -44,7 +44,7 @@ export const assets = {
     google,
     apple,
     github,
-    }
+}
 
     export const blog_data = [{
         id:1,
