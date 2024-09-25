@@ -20,10 +20,8 @@ export const POST = async (req) => {
         }
 
         const userExists = await User.findOne({ email: email });
-        const { username } = userExists;
 
         if (userExists) {
-            // return new Response(JSON.stringify(`User ${username} is successfully signed in.`), { status: 200 });
             return new Response(JSON.stringify({ 
                 message: "User logged in successfully", 
                 userId: userExists._id,
@@ -32,7 +30,6 @@ export const POST = async (req) => {
                 isCreator: userExists.isCreator
             }), { status: 200 });
         } else {
-            // return new Response(JSON.stringify(`User ${username} with email ${email} does not exist.`), { status: 404 });
             return new Response(JSON.stringify({ error: "Email does not exists" }), { status: 404 });
         }
     } catch (error) {

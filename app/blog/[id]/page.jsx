@@ -6,9 +6,11 @@ import { formatDate, renderParagraphs } from '@/app/utils/utils';
 import Header from '@/components/Header';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import Loading from '@/components/Loading';
+import { useBlogContext } from '@/components/BlogsContext';
 
 const Page = () => {
     const [loading, setLoading] = useState(true);
+    const { setEdited } = useBlogContext();
     const [blog, setBlog] = useState("");
     const [error, setError] = useState("");
     const params = useParams();
@@ -40,11 +42,12 @@ const Page = () => {
 
     const handleDeleteBlog = async (e) => {
       try {
-        const response = await fetch(`/api/blog/delete/${id}`, {
+        const response = await fetch(`/api/blog/${id}`, {
           method: 'DELETE',
         });
         
         if (response.ok) {
+          setEdited(true);
           router.push("/");
         } else {
           const errorData = await response.json();

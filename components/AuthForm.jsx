@@ -6,7 +6,6 @@ import { assets } from '@/assets/assets';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { useAuth } from './AuthContext';
 
 const AuthForm = ({ title, buttonTitle, api }) => {
   const [name, setName] =  useState("");
@@ -15,11 +14,17 @@ const AuthForm = ({ title, buttonTitle, api }) => {
   const [error, setError] = useState("");
   const router = useRouter();
   const { data : session } = useSession();
-  const { setIsUserLoggedIn } = useAuth();
 
   useEffect(() => {
     setError(""); 
   }, [name, email, password])
+
+  const reset = () => {
+    setError("");
+    setName("");
+    setEmail("");
+    setPassword("");
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,11 +49,7 @@ const AuthForm = ({ title, buttonTitle, api }) => {
 
         if (response.ok) {
             const data = await response.json();
-
-            setError("");
-            setName("");
-            setEmail("");
-            setPassword("");
+            reset();
 
             const result = await signIn("credentials", {
                 email: data.email,

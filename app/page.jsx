@@ -4,13 +4,10 @@ import Header from "@/components/Header";
 import CreateIcon from '@mui/icons-material/Create';
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { useAuth } from "@/components/AuthContext";
 
 export default function Home() {
 
-
   const { data : session } = useSession();
-  const { isUserLoggedIn, setIsUserLoggedIn } = useAuth();
 
   return (
     <>
@@ -23,9 +20,16 @@ export default function Home() {
         <p className="hidden text-start sm:flex sm:text-gray-500 text-xl">
           Dive into a space where innovation meets inspiration. <br/>
         </p>
-        <Blogs/>
+        <Blogs title={"Most Recent Blogs"}/>
       </div>
-      {(session && session) && <Link href="/create-blog" className="fixed bottom-5 right-8 sm:right-14 sm:bottom-10 md:right-6 md:bottom-10 shadow-xl bg-blue-700 hover:bg-blue-800 p-4 text-center rounded-full" ><CreateIcon sx={{color: "white", fontSize: 35}}/></Link> };
+      {(session?.user?.id) && 
+      <Link href="/create-blog" className="fixed bottom-5 right-8 sm:right-14 sm:bottom-10 md:right-6 md:bottom-10 shadow-2xl bg-blue-700 hover:bg-blue-800 py-4 px-5 text-center rounded-full text-white" >
+        <div className="flex justify-center items-center gap-4 ">
+          <p>Create Blog</p> 
+          <CreateIcon sx={{color: "white", fontSize: 35}}/>
+        </div>
+      </Link> 
+      };
     </>
   );
 }

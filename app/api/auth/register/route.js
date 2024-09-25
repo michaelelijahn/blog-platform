@@ -51,6 +51,7 @@ export const POST = async (req) => {
                 name: newUser.name,
                 isCreator: newUser.isCreator
             }), { status: 201 });
+            
         } catch (createError) {
             console.error("Error in User.create():", createError);
             if (createError.code === 11000) {

@@ -1,6 +1,6 @@
 import Provider from "@/components/Provider";
 import "./globals.css";
-import { AuthProvider } from "@/components/AuthContext";
+import { BlogProvider } from "@/components/BlogsContext";
 
 export const metadata = {
   title: "Blog Project",
@@ -12,7 +12,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="">
         <Provider>
-          <AuthProvider>
+          <BlogProvider>
             <div className="main">
               <div className="gradient"/>
             </div>
@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
             <div className="app">
                 {children}
             </div>
-          </AuthProvider>
+          </BlogProvider>
         </Provider>
       </body>
     </html>

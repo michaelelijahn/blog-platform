@@ -5,17 +5,20 @@ import React, { useState, useEffect } from 'react'
 import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { assets } from '@/assets/assets'
-import { useAuth } from './AuthContext'
 
 const Header = () => {
+  const [mounted, setMounted] = useState(false);
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const { data : session } = useSession();
-  const { isUserLoggedIn, setIsUserLoggedIn } = useAuth();
   const router = useRouter();
+  const CREATOR_SECRET = process.env.CREATOR_SECRET;
+  const isCreator = session?.user?.email === CREATOR_SECRET;
 
   useEffect(() => {
-    setIsUserLoggedIn(false);
-  }, [session]);
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   return (
     <nav className='w-full pt-3 sm:mb-12 font-semibold'>
@@ -32,16 +35,12 @@ const Header = () => {
               <li className='dropdown-link'><Link href="/" className='' onClick={() => setToggleDropdown(false)}>Home</Link></li>
               <li className='dropdown-link'><Link href="/about-us" className='' onClick={() => setToggleDropdown(false)}>About Us</Link></li>
               <li className='dropdown-link'><Link href="/advantages" className='' onClick={() => setToggleDropdown(false)}>Advantages</Link></li>
-              <li className='dropdown-link'><Link href="/blog" className='' onClick={() => setToggleDropdown(false)}>Blog</Link></li>
+              <li className='dropdown-link'><Link href="/blog" className='' onClick={() => setToggleDropdown(false)}>{isCreator ? "Manage Blogs" : "Saved Blogs"}</Link></li>
               {
-                session || isUserLoggedIn ? 
+                session?.user ? 
                   <button className='light-btn w-full' onClick={() => {
                     setToggleDropdown(false);
-                    if (isUserLoggedIn) {
-                      setIsUserLoggedIn(false);
-                    } else {
-                      signOut();
-                    }
+                    signOut();
                     router.push("/")
                   }}>Sign Out</button>
                 : 
@@ -80,22 +79,21 @@ const Header = () => {
           </Link>
 
           <Link href="/blog" className='flex flex-col justify-center items-center group mb-1'>
-            Blog
+            {session?.user && isCreator ? <p>Manage Blogs</p> : <p>Saved Blogs</p>}
             <span className='w-full h-0.5 bg-black transform scale-x-0 origin-left transition-transform duration-300 ease-out group-hover:scale-x-100'></span>
           </Link>
         </div>
 
         <div className='flex gap-2'>
-          {/* <Image/> */}
-          <h1>{isUserLoggedIn}</h1>
-          {session || isUserLoggedIn ?
+          {session?.user ?
             <>
               <button className='colored-btn' onClick={() => {
-                if (isUserLoggedIn) {
-                  setIsUserLoggedIn(false);
-                } else {
-                  signOut();
-                }
+                signOut();
+                // if (isUserLoggedIn) {
+                //   setIsUserLoggedIn(false);
+                // } else {
+                //   signOut();
+                // }
                 router.push("/");
               }}>Sign Out</button>
               <Link href="/profile">

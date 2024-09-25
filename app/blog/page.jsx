@@ -6,7 +6,7 @@ const page = () => {
   return (
     <>
       <Header />
-      <Blogs />
+      <Blogs title={'Blogs'} />
     </>
   )
 }

@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useParams, useRouter } from 'next/navigation';
 import { convertToBase64 } from '@/app/utils/utils';
 import Loading from '@/components/Loading';
+import { useBlogContext } from '@/components/BlogsContext';
 
 const page = () => {
     const [title, setTitle] = useState("");
@@ -11,6 +12,7 @@ const page = () => {
     const [author, setAuthor] = useState("");
     const [prevImage, setPrevImage] = useState("");
     const [image, setImage] = useState({ myFile : ""});
+    const { setEdited } = useBlogContext();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [loading, setLoading] = useState(true);
     const { data: session } = useSession();
@@ -41,7 +43,7 @@ const page = () => {
                 }
 
                 const data = await response.json();
-                console.log(data);
+                // console.log(data);
                 setTitle(data.title);
                 setBlog(data.blog);
                 setAuthor(data.author);
@@ -65,7 +67,7 @@ const page = () => {
         setIsSubmitting(true);
 
         try {
-            const response = await fetch(`/api/blog/edit/${id}`, {
+            const response = await fetch(`/api/blog/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -80,6 +82,7 @@ const page = () => {
             });
 
             if (response.ok) {
+                setEdited(true);
                 router.push("/");
             } else {
                 throw new Error('Failed to create blog post');
