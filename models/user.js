@@ -3,8 +3,7 @@ import { Schema, model, models } from "mongoose";
 const UserSchema = new Schema({
   name: { 
     type: String,
-    required: [true, "Username is required"],
-    lowercase: true,
+    required: [true, "Name is required"],
     trim: true,
   },
   email: {
@@ -22,11 +21,11 @@ const UserSchema = new Schema({
     type: String,
     required: [true, "Password is required"],
     minlength: [8, 'Password should be at least 8 characters long'],
-    match: [
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/,
-      'Password must contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character'
-    ]
   },
+  isCreator: {
+    type: Boolean,
+    default: false,
+  }
 }, { timestamps: true });
 
 const User = models.User || model("User", UserSchema);

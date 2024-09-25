@@ -25,7 +25,7 @@ export default function Home() {
         </p>
         <Blogs/>
       </div>
-      {(session || isUserLoggedIn) && <Link href="/create-blog" className="fixed bottom-5 right-8 sm:right-14 sm:bottom-10 md:right-6 md:bottom-10 shadow-xl bg-blue-700 hover:bg-blue-800 p-4 text-center rounded-full" ><CreateIcon sx={{color: "white", fontSize: 35}}/></Link> };
+      {(session && session) && <Link href="/create-blog" className="fixed bottom-5 right-8 sm:right-14 sm:bottom-10 md:right-6 md:bottom-10 shadow-xl bg-blue-700 hover:bg-blue-800 p-4 text-center rounded-full" ><CreateIcon sx={{color: "white", fontSize: 35}}/></Link> };
     </>
   );
 }

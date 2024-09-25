@@ -23,9 +23,17 @@ export const POST = async (req) => {
         const { username } = userExists;
 
         if (userExists) {
-            return new Response(JSON.stringify(`User ${username} is successfully signed in.`), { status: 200 });
+            // return new Response(JSON.stringify(`User ${username} is successfully signed in.`), { status: 200 });
+            return new Response(JSON.stringify({ 
+                message: "User logged in successfully", 
+                userId: userExists._id,
+                email: userExists.email,
+                name: userExists.name,
+                isCreator: userExists.isCreator
+            }), { status: 200 });
         } else {
-            return new Response(JSON.stringify(`User ${username} with email ${email} does not exist.`), { status: 404 });
+            // return new Response(JSON.stringify(`User ${username} with email ${email} does not exist.`), { status: 404 });
+            return new Response(JSON.stringify({ error: "Email does not exists" }), { status: 404 });
         }
     } catch (error) {
         return new Response(JSON.stringify(`Unable to register user, please try again later`), { status: 500 });

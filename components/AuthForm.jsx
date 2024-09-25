@@ -30,30 +30,47 @@ const AuthForm = ({ title, buttonTitle, api }) => {
     }
 
     try {
-      const response = await fetch(api, {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            name, email, password
-          }),
-      });
+        const response = await fetch(api, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name,
+                email,
+                password,
+            }),
+        });
 
-      if (response.ok) {
-          if (title === "Sign Up") setName("");
-          setEmail("");
-          setPassword("");
-          setError("");
-          setIsUserLoggedIn(true);
-          router.push('/');
-      } else {
-        setError(response.json());
-      }
-    } catch (error) {
-      console.log(error);
+        if (response.ok) {
+            const data = await response.json();
+
+            setError("");
+            setName("");
+            setEmail("");
+            setPassword("");
+
+            const result = await signIn("credentials", {
+                email: data.email,
+                password,
+                redirect: false,
+            });
+
+            if (result.ok) {
+                router.push("/");
+            } else {
+                console.error("Error signing in after registration");
+            }
+        } else {
+            const errorData = await response.json();
+            setError(errorData.error || "Registration failed"); // Set error message
+        }
+    } catch (err) {
+        console.error("Error during registration:", err);
+        setError("An unexpected error occurred. Please try again.");
     }
-  }
+  };
+
 
   if (session) {
     router.push("/");
@@ -63,7 +80,7 @@ const AuthForm = ({ title, buttonTitle, api }) => {
     <div className='flex flex-col justify-start mt-32 py-5 min-w-[380px] w-[90vw] sm:w-[45vw] sm:h-[78vh] bg-slate-100 rounded-2xl shadow-md space-y-6'>
       <h1 className='text-4xl py-5 font-semibold text-center'>{title}</h1>
       <div className='flex flex-col justify-center items-center gap-3'>
-        {title !== "Sign Up" ? null : <input type="text" placeholder='ex : johnDoe123' className='form-input' onChange={(e) => setName(e.target.value)} required />}
+        {title !== "Sign Up" ? null : <input type="text" placeholder='ex : John Doe' className='form-input' onChange={(e) => setName(e.target.value)} required />}
         <input type="text" placeholder='ex: testing@gmail.com' className='form-input' onChange={(e) => setEmail(e.target.value)} required />
         <input type="password" placeholder='Password' className='form-input mb-5' onChange={(e) => setPassword(e.target.value)} required />
         <button className='colored-btn w-[80vw] sm:w-[32vw] md:w-[40vw] lg:w-[32vw] font-semibold' onClick={handleSubmit}>{buttonTitle}</button>
