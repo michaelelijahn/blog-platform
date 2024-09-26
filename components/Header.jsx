@@ -36,7 +36,7 @@ const Header = () => {
               <li className='dropdown-link'><Link href="/" className='' onClick={() => setToggleDropdown(false)}>Home</Link></li>
               <li className='dropdown-link'><Link href="/about-us" className='' onClick={() => setToggleDropdown(false)}>About Us</Link></li>
               <li className='dropdown-link'><Link href="/advantages" className='' onClick={() => setToggleDropdown(false)}>Advantages</Link></li>
-              <li className='dropdown-link'><Link href="/blog" className='' onClick={() => setToggleDropdown(false)}>{isCreator ? "Manage Blogs" : "Saved Blogs"}</Link></li>
+              <li className='dropdown-link'><Link href="/blog" className='' onClick={() => setToggleDropdown(false)}>{isCreator ? "My Blogs" : "Saved Blogs"}</Link></li>
               {
                 session?.user ? 
                   <button className='light-btn w-full' onClick={() => {
@@ -80,7 +80,7 @@ const Header = () => {
           </Link>
 
           <Link href="/blog" className='flex flex-col justify-center items-center group mb-1'>
-            {isCreator ? <p>Manage Blogs</p> : <p>Saved Blogs</p>}
+            {isCreator ? <p>My Blogs</p> : <p>Saved Blogs</p>}
             <span className='w-full h-0.5 bg-black transform scale-x-0 origin-left transition-transform duration-300 ease-out group-hover:scale-x-100'></span>
           </Link>
         </div>

@@ -4,8 +4,7 @@ import User from "@/models/user";
 import UserProvider from "@/models/userProvider";
 import { getSession } from "next-auth/react";
 
-
-export const POST = async (req) => {
+export async function POST (req) {
 
     try {
         const { id, email } = await req.json();
@@ -55,26 +54,38 @@ export const POST = async (req) => {
     }
 }
 
-// export const GET = async (req) => {
-//     const session = await getSession();
+export async function GET (req) {
 
-//     if (!session) {
-//         return new Response("You must be logged in to view saved blogs", { status: 401 });
-//     }
+    const email = req.headers.get('email');
+    const name = req.headers.get('name');
 
-//     try {
-//         await connectToDB();
+    if (!email || !name) {
+        return new Response("Missing email or name", { status : 401 });
+    }
+    console.log("passed email and name check ");
 
-//         const user = (User.findOne({ email: session.user.email }) || UserProvider.findOne({ email: session.user.email })).populate('savedBlogs');
+    try {
+        await connectToDB();
 
-//         if (!user) {
-//             return new Response("User not found", { status: 404 });
-//         }
+        let user = await User.findOne({ email });
 
-//         return new Response(JSON.stringify(user.savedBlogs), { status: 200 });
+        if (!user || user.name !== name) {
+            user = await UserProvider.findOne({ email });
+        }
 
-//     } catch (error) {
-//         console.error('Error fetching saved blogs:', error);
-//         return new Response("Failed to fetch saved blogs", { status: 500 });
-//     }
-// }
+        console.log("foun user : ", user);
+
+        if (!user) {
+            return new Response("User not found", { status: 401 });
+        }
+
+        await user.populate('savedBlogs');
+
+        console.log("populate user");
+
+        return new Response(JSON.stringify(user.savedBlogs), { status: 200 });
+    } catch (error) {
+        console.error('Error fetching saved blogs:', error);
+        return new Response("Failed to fetch saved blogs", { status: 500 });
+    }
+}

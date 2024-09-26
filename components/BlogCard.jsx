@@ -1,16 +1,16 @@
 "use client"
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
 import { formatDate } from '@/app/utils/utils';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 import { useSession } from 'next-auth/react';
 
-const BlogCard = ({ id, title, author, image, date }) => {
+const BlogCard = ({ id, title, author, image, date, savedStatus, setEdited }) => {
 
   const { data: session, status } = useSession();
-  const [saved, setSaved] = useState(false);
+  const [saved, setSaved] = useState(savedStatus);
 
   const handleSave = async () => {
     console.log("check status : ", status);
@@ -18,9 +18,8 @@ const BlogCard = ({ id, title, author, image, date }) => {
       alert("You need to be logged in to save blogs!");
       return;
     }
-    
-    console.log("checking user id : ", session?.user?.id);
-    console.log("checking user email : ", session?.user?.email);
+
+    console.log("saved status : ", savedStatus);
 
     setSaved((prev) => !prev);
 
@@ -39,6 +38,7 @@ const BlogCard = ({ id, title, author, image, date }) => {
       if (response.ok) {
         alert(data.message);
         console.log(data.message);
+        setEdited(true);
       } else {
         console.log(data.message);
       }

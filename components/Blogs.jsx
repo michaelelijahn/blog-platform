@@ -14,18 +14,31 @@ const Blogs = ({ title }) => {
   const { data: session } = useSession();
   
   useEffect(() => {
-    if (blogs.length === 0 || edited) {
-      getBlogs();
+    if (blogs.length === 0 || savedBlogs.length === 0 || edited) {
+      const fetchBlogData = async () => {
+        setLoading(true);
+        await getSavedBlogs();
+        await getBlogs();
+        setLoading(false);
+        setEdited(false);
+      }
+      fetchBlogData();
     }
   }, [session, edited]);
 
   const getSavedBlogs = async () => {
     try {
       const response = await fetch('/api/blog/saved', {
-        method: 'GET'
+        method: 'GET',
+        headers: { 
+          'Content-Type': 'application/json',
+          'email': session?.user?.email,
+          'name': session?.user?.name,
+        },
       });
 
       const data = await response.json();
+      console.log("all saved blogs : ", data);
       setSavedBlogs(data);
     } catch (e) {
       console.error('Error fetching saved blogs:', e);
@@ -33,21 +46,15 @@ const Blogs = ({ title }) => {
   }
 
   const getBlogs = async () => {
-    setLoading(true);
     
     try {
       const response = await fetch('/api/blog');
       const data = await response.json();
-      await getSavedBlogs();
-      
-      console.log(data);
+      console.log("all blogs data : ", data);
       setBlogs(data);
 
     } catch (error) {
       console.error("Error fetching blogs:", error);
-    } finally {
-      setLoading(false);
-      setEdited(false); 
     }
   }
 
@@ -61,22 +68,26 @@ const Blogs = ({ title }) => {
           placeholder={`I'm looking for...`}
         />
       </span>
-      <p className='font-semibold text-2xl py-2 mb-4'>{title}</p>
+      <p className='font-semibold text-2xl py-2 mb-4'>Blogs</p>
       {loading ? (
         <Loading/>
       ) : (
+        blogs.length > 0 &&
         <div className='grid grid-cols-1 lg:grid-cols-3 sm:gap-8'>
-          {blogs.map((b) => (
-            <BlogCard 
+          {blogs.map((b) => {
+            const isSaved = savedBlogs.length > 0 && savedBlogs.find((savedBlog) => savedBlog._id === b._id);
+
+            return <BlogCard 
               key={b._id} 
               id={b._id} 
               title={b.title}
               author={b.author} 
               image={b.image} 
               date={b.createdAt}
-              
+              savedStatus={isSaved}
+              setEdited={setEdited}
             />
-          ))}
+          })}
         </div>
       )}
     </div>
