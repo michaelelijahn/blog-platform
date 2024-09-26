@@ -15,7 +15,11 @@ const UserProviderSchema = new Schema({
     isCreator: {
         type: Boolean,
         default: false,
-    }
+    },
+    savedBlogs: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Blog'
+    }]
 }, {
     timestamps: true
 })

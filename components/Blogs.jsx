@@ -9,6 +9,7 @@ import { useBlogContext } from './BlogsContext';
 const Blogs = ({ title }) => {
   const { edited, setEdited } = useBlogContext();
   const [ blogs, setBlogs] = useState([]);
+  const [ savedBlogs, setSavedBlogs ] = useState([]);
   const [loading, setLoading] = useState(true);
   const { data: session } = useSession();
   
@@ -18,12 +19,26 @@ const Blogs = ({ title }) => {
     }
   }, [session, edited]);
 
+  const getSavedBlogs = async () => {
+    try {
+      const response = await fetch('/api/blog/saved', {
+        method: 'GET'
+      });
+
+      const data = await response.json();
+      setSavedBlogs(data);
+    } catch (e) {
+      console.error('Error fetching saved blogs:', e);
+    }
+  }
+
   const getBlogs = async () => {
     setLoading(true);
     
     try {
       const response = await fetch('/api/blog');
       const data = await response.json();
+      await getSavedBlogs();
       
       console.log(data);
       setBlogs(data);
@@ -59,6 +74,7 @@ const Blogs = ({ title }) => {
               author={b.author} 
               image={b.image} 
               date={b.createdAt}
+              
             />
           ))}
         </div>

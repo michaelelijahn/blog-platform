@@ -84,7 +84,7 @@ const Page = () => {
                 <div className='flex justify-between'>
                     <div>
                         <h1 className='font-bold text-4xl mb-5'>{blog.title}</h1>
-                        <div className='flex gap-10 mb-4 text-sm text-gray-600'>
+                        <div className='flex gap-6 mb-4 text-sm text-gray-600'>
                             <p>By {blog.author}</p>
                             <p className='flex justify-center items-center gap-1'>
                                 <FiberManualRecordIcon fontSize='sm' /> 

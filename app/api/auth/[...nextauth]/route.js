@@ -103,12 +103,17 @@ export const authOptions = {
             return token;
         },
         async session({ session, token }) {
-            session.user.id = token.id;
-            session.user.name = token.name;
-            session.user.email = token.email;
-            session.user.isCreator = token.isCreator;
-            session.user.provider = token.provider;
-            return session;
+            try {
+                session.user.id = token.id;
+                session.user.name = token.name;
+                session.user.email = token.email;
+                session.user.isCreator = token.isCreator;
+                session.user.provider = token.provider;
+                return session;
+            } catch (e) {
+                console.error("session callback error : ", e);
+                return session;
+            }
         },
         async signIn({ user, account }) {
             await connectToDB();
@@ -128,9 +133,10 @@ export const authOptions = {
             return true;
         }
     },
+    secret: process.env.NEXTAUTH_SECRET,
     pages: {
         signIn: "/sign-in"
-    }
+    },
 };
 
 const handler = NextAuth(authOptions);
