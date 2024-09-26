@@ -19,9 +19,12 @@ const Page = () => {
     const { id } = params;
     const router = useRouter();
     const { data: session } = useSession();
-    const isCreator = session?.user?.email === CREATOR_SECRET;
+    const [isCreator, setIsCreator] = useState(false);
     
     useEffect(() => {
+        if (session?.user?.email === CREATOR_SECRET) {
+            setIsCreator(true);
+        }
         const fetchBlog = async () => {
             setLoading(true);
             try {

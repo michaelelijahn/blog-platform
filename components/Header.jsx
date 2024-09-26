@@ -12,11 +12,13 @@ const Header = () => {
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const { data : session } = useSession();
   const router = useRouter();
-  // const CREATOR_SECRET = process.env.CREATOR_SECRET;
-  const isCreator = session?.user?.email === CREATOR_SECRET;
+  const [isCreator, setIsCreator] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    if (session?.user?.email === CREATOR_SECRET) {
+      setIsCreator(true);
+    }
   }, []);
 
   if (!mounted) return null;
