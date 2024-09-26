@@ -1,10 +1,10 @@
 import { Schema, model, models } from "mongoose";
 
 const BlogSchema = new Schema({
-    creator: {
-        type: Schema.Types.ObjectId,
-        ref: 'UserProvider'
-    },
+    // creator: {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'UserProvider'
+    // },
     image: {
         type: String,
     },

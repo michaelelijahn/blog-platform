@@ -4,12 +4,12 @@ import Header from "@/components/Header";
 import CreateIcon from '@mui/icons-material/Create';
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { CREATOR_SECRET } from "./utils/utils";
+import { useBlogContext } from "@/components/BlogsContext";
 
 export default function Home() {
 
   const { data : session } = useSession();
-  const isCreator  = session?.user?.email === CREATOR_SECRET;
+  const { isCreator }  = useBlogContext();
 
   return (
     <>

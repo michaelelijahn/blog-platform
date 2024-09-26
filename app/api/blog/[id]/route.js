@@ -31,15 +31,13 @@ export async function PUT(req, { params }) {
     try {
         await connectToDB();
 
-        const { creator, image, title, blog, author } = await req.json();
-        console.log(creator, image, title, blog, author);
+        const { image, title, blog, author } = await req.json();
+        console.log (image, title, blog, author);
         const existingBlog = await Blog.findById(id);
 
         if (!existingBlog) {
             return new Response("Blog not found", { status : 404 });
         }
-
-        existingBlog.creator = creator;
         existingBlog.image = image;
         existingBlog.title = title;
         existingBlog.author = author;

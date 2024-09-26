@@ -51,7 +51,7 @@ const CreateBlogPage = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    creator: session?.user.id,
+                    // creator: session?.user.id,
                     image: image.myFile,
                     title,
                     blog,

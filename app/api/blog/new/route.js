@@ -9,7 +9,7 @@ export async function POST(req) {
         const { creator, image, title, blog, author } = await req.json();
 
         const newBlog = new Blog({
-            creator,
+            // creator,
             image : image === 'default' ? '/assets/blog_pic_6.png' : image,
             title,
             blog,
