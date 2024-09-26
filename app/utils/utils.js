@@ -36,3 +36,5 @@ export const convertToBase64 = (file) => {
       }
   });
 }
+
+export const CREATOR_SECRET = process.env.CREATOR_SECRET;

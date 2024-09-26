@@ -5,13 +5,14 @@ import React, { useState, useEffect } from 'react'
 import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { assets } from '@/assets/assets'
+import { CREATOR_SECRET } from '@/app/utils/utils'
 
 const Header = () => {
   const [mounted, setMounted] = useState(false);
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const { data : session } = useSession();
   const router = useRouter();
-  const CREATOR_SECRET = process.env.CREATOR_SECRET;
+  // const CREATOR_SECRET = process.env.CREATOR_SECRET;
   const isCreator = session?.user?.email === CREATOR_SECRET;
 
   useEffect(() => {

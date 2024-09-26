@@ -7,6 +7,8 @@ import Header from '@/components/Header';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import Loading from '@/components/Loading';
 import { useBlogContext } from '@/components/BlogsContext';
+import { useSession } from 'next-auth/react';
+import { CREATOR_SECRET } from '@/app/utils/utils';
 
 const Page = () => {
     const [loading, setLoading] = useState(true);
@@ -16,6 +18,8 @@ const Page = () => {
     const params = useParams();
     const { id } = params;
     const router = useRouter();
+    const { data: session } = useSession();
+    const isCreator = session?.user?.email === CREATOR_SECRET;
     
     useEffect(() => {
         const fetchBlog = async () => {
@@ -94,10 +98,12 @@ const Page = () => {
                     </div>
                 </div>
                 {renderParagraphs(blog.blog)}
-                <div className='flex gap-2 my-8 font-semibold'>
+                {(session?.user?.id && isCreator) && 
+                    <div className='flex gap-2 my-8 font-semibold'>
                     <button className='colored-btn' onClick={() => { router.push(`/edit-blog/${id}`)}}>Edit Blog</button>
                     <button className='rounded-full border border-red-600 bg-red-600 py-1.5 px-5 text-white transition-all hover:bg-red-700 hover:border-red-700 text-center text-sm flex items-center justify-center' onClick={handleDeleteBlog}>Delete Blog</button>
-                </div>
+                    </div>
+                }
             </div>
         </>
     )
