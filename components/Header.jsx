@@ -6,19 +6,17 @@ import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { assets } from '@/assets/assets'
 import { CREATOR_SECRET } from '@/app/utils/utils'
+import { useBlogContext } from './BlogsContext'
 
 const Header = () => {
   const [mounted, setMounted] = useState(false);
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const { data : session } = useSession();
   const router = useRouter();
-  const [isCreator, setIsCreator] = useState(false);
+  const { isCreator } = useBlogContext();
 
   useEffect(() => {
     setMounted(true);
-    if (session?.user?.email === CREATOR_SECRET) {
-      setIsCreator(true);
-    }
   }, []);
 
   if (!mounted) return null;
@@ -82,7 +80,7 @@ const Header = () => {
           </Link>
 
           <Link href="/blog" className='flex flex-col justify-center items-center group mb-1'>
-            {session?.user && isCreator ? <p>Manage Blogs</p> : <p>Saved Blogs</p>}
+            {isCreator ? <p>Manage Blogs</p> : <p>Saved Blogs</p>}
             <span className='w-full h-0.5 bg-black transform scale-x-0 origin-left transition-transform duration-300 ease-out group-hover:scale-x-100'></span>
           </Link>
         </div>

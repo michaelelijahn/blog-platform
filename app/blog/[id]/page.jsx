@@ -8,23 +8,19 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import Loading from '@/components/Loading';
 import { useBlogContext } from '@/components/BlogsContext';
 import { useSession } from 'next-auth/react';
-import { CREATOR_SECRET } from '@/app/utils/utils';
+
 
 const Page = () => {
     const [loading, setLoading] = useState(true);
-    const { setEdited } = useBlogContext();
+    const { setEdited, isCreator } = useBlogContext();
     const [blog, setBlog] = useState("");
     const [error, setError] = useState("");
     const params = useParams();
     const { id } = params;
     const router = useRouter();
     const { data: session } = useSession();
-    const [isCreator, setIsCreator] = useState(false);
     
     useEffect(() => {
-        if (session?.user?.email === CREATOR_SECRET) {
-            setIsCreator(true);
-        }
         const fetchBlog = async () => {
             setLoading(true);
             try {
