@@ -29,7 +29,7 @@ const UserSchema = new Schema({
   savedBlogs: [{
     type: Schema.Types.ObjectId,
     ref: 'Blog'
-  }]
+  }],
 }, { timestamps: true });
 
 const User = models.User || model("User", UserSchema);

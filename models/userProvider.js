@@ -19,7 +19,7 @@ const UserProviderSchema = new Schema({
     savedBlogs: [{
         type: Schema.Types.ObjectId,
         ref: 'Blog'
-    }]
+    }],
 }, {
     timestamps: true
 })

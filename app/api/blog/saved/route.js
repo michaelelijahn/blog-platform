@@ -62,7 +62,7 @@ export async function GET (req) {
     if (!email || !name) {
         return new Response("Missing email or name", { status : 401 });
     }
-    console.log("passed email and name check ");
+    // console.log("passed email and name check ");
 
     try {
         await connectToDB();
@@ -73,7 +73,7 @@ export async function GET (req) {
             user = await UserProvider.findOne({ email });
         }
 
-        console.log("foun user : ", user);
+        // console.log("found user : ", user);
 
         if (!user) {
             return new Response("User not found", { status: 401 });
@@ -81,7 +81,7 @@ export async function GET (req) {
 
         await user.populate('savedBlogs');
 
-        console.log("populate user");
+        // console.log("populate user");
 
         return new Response(JSON.stringify(user.savedBlogs), { status: 200 });
     } catch (error) {

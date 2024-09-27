@@ -12,7 +12,8 @@ import { useSession } from 'next-auth/react';
 
 const Page = () => {
     const [loading, setLoading] = useState(true);
-    const { setEdited, isCreator } = useBlogContext();
+    const { setEdited, userId } = useBlogContext();
+    const [isCreator, setIsCreator] = useState(false);
     const [blog, setBlog] = useState("");
     const [error, setError] = useState("");
     const params = useParams();
@@ -33,6 +34,7 @@ const Page = () => {
                 const data = await response.json();
                 console.log(data);
                 setBlog(data);
+                setIsCreator(userId === data.creator);
             } catch (e) {
                 console.log(e);
                 setError("Failed to load blog");
@@ -42,6 +44,14 @@ const Page = () => {
         }
         fetchBlog();
     }, [id]);
+
+    useEffect(() => {
+        if (userId && blog) {
+            setIsCreator(userId === blog.creator);
+            console.log("user id : ", userId);
+            console.log("creator : ", blog.creator);
+        }
+    }, [userId, blog])
 
     const handleDeleteBlog = async (e) => {
       try {

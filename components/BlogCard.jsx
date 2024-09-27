@@ -6,25 +6,23 @@ import { formatDate } from '@/app/utils/utils';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 import { useSession } from 'next-auth/react';
+import { useBlogContext } from './BlogsContext';
 
-const BlogCard = ({ id, title, author, image, date, savedStatus, setEdited }) => {
+const BlogCard = ({ id, title, author, image, date, savedStatus, owner }) => {
 
   const { data: session, status } = useSession();
   const [saved, setSaved] = useState(savedStatus);
+  const { setEdited } = useBlogContext();
 
   const handleSave = async () => {
-    console.log("check status : ", status);
     if (status !== 'authenticated') {
       alert("You need to be logged in to save blogs!");
       return;
     }
 
-    console.log("saved status : ", savedStatus);
-
     setSaved((prev) => !prev);
 
     try {
-      console.log("testing if id is valid : ", id);
       const response = await fetch(`/api/blog/saved`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

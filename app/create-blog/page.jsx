@@ -13,20 +13,6 @@ const CreateBlogPage = () => {
     const { data: session } = useSession();
     const router = useRouter();
 
-    // const convertToBase64 = (file) => {
-    //     return new Promise((resolve, reject) => {
-    //         const fileReader = new FileReader();
-    //         fileReader.readAsDataURL(file);
-    //         console.log(fileReader.result);
-    //         fileReader.onload = () => {
-    //             resolve(fileReader.result)
-    //         }
-    //         fileReader.onerror = (error) => {
-    //             reject(error);
-    //         }
-    //     });
-    // }
-
     const handleFileUpload = async (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -51,6 +37,8 @@ const CreateBlogPage = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
+                    email: session?.user?.email,
+                    name: session?.user?.name,
                     // creator: session?.user.id,
                     image: image.myFile,
                     title,
