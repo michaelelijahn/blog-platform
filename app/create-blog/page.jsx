@@ -48,7 +48,8 @@ const CreateBlogPage = () => {
             });
 
             if (response.ok) {
-                router.push("/blog");
+                router.prefetch("/");
+                router.push("/");
             } else {
                 throw new Error('Failed to create blog post');
             }
