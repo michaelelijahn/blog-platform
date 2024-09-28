@@ -4,12 +4,10 @@ import Header from "@/components/Header";
 import CreateIcon from '@mui/icons-material/Create';
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { useBlogContext } from "@/components/BlogsContext";
 
 export default function Home() {
 
   const { data : session } = useSession();
-  const { isCreator }  = useBlogContext();
 
   return (
     <>
@@ -24,10 +22,10 @@ export default function Home() {
         </p>
         <Blogs title={"Most Recent Blogs"}/>
       </div>
-      {(session?.user?.id && isCreator) && 
+      {(session?.user?.id) && 
       <Link href="/create-blog" className="fixed bottom-5 right-8 sm:right-14 sm:bottom-10 md:right-6 md:bottom-10 shadow-2xl bg-blue-700 hover:bg-blue-800 py-4 px-5 text-center rounded-full text-white" >
-        <div className="flex justify-center items-center gap-4 ">
-          <p>Create Blog</p> 
+        <div className="flex justify-center items-center gap-3">
+          <p className="text-lg">Write Blog</p> 
           <CreateIcon sx={{color: "white", fontSize: 35}}/>
         </div>
       </Link> 

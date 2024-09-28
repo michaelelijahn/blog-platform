@@ -5,15 +5,12 @@ import React, { useState, useEffect } from 'react'
 import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { assets } from '@/assets/assets'
-import { CREATOR_SECRET } from '@/app/utils/utils'
-import { useBlogContext } from './BlogsContext'
 
 const Header = () => {
   const [mounted, setMounted] = useState(false);
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const { data : session } = useSession();
   const router = useRouter();
-  const { isCreator } = useBlogContext();
 
   useEffect(() => {
     setMounted(true);
@@ -33,10 +30,10 @@ const Header = () => {
           <button className='light-btn' onClick={() => setToggleDropdown((prev) => (!prev))}>Menu</button>
           {toggleDropdown && (
             <ul className='dropdown'>
-              <li className='dropdown-link'><Link href="/" className='' onClick={() => setToggleDropdown(false)}>Home</Link></li>
+              <li className='dropdown-link'><Link href="/" prefetch={true} className='' onClick={() => setToggleDropdown(false)}>Home</Link></li>
               <li className='dropdown-link'><Link href="/about-us" className='' onClick={() => setToggleDropdown(false)}>About Us</Link></li>
               <li className='dropdown-link'><Link href="/advantages" className='' onClick={() => setToggleDropdown(false)}>Advantages</Link></li>
-              <li className='dropdown-link'><Link href="/blog" className='' onClick={() => setToggleDropdown(false)}>{isCreator ? "My Blogs" : "Saved Blogs"}</Link></li>
+              <li className='dropdown-link'><Link href="/blog" prefetch={true} className='' onClick={() => setToggleDropdown(false)}>Saved Blogs</Link></li>
               {
                 session?.user ? 
                   <button className='light-btn w-full' onClick={() => {
@@ -80,7 +77,7 @@ const Header = () => {
           </Link>
 
           <Link href="/blog" className='flex flex-col justify-center items-center group mb-1'>
-            {isCreator ? <p>My Blogs</p> : <p>Saved Blogs</p>}
+            <p>Saved Blogs</p>
             <span className='w-full h-0.5 bg-black transform scale-x-0 origin-left transition-transform duration-300 ease-out group-hover:scale-x-100'></span>
           </Link>
         </div>
@@ -90,11 +87,6 @@ const Header = () => {
             <>
               <button className='colored-btn' onClick={() => {
                 signOut();
-                // if (isUserLoggedIn) {
-                //   setIsUserLoggedIn(false);
-                // } else {
-                //   signOut();
-                // }
                 router.push("/");
               }}>Sign Out</button>
               <Link href="/profile">
