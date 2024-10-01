@@ -22,10 +22,6 @@ const UserSchema = new Schema({
     required: [true, "Password is required"],
     minlength: [8, 'Password should be at least 8 characters long'],
   },
-  isCreator: {
-    type: Boolean,
-    default: false,
-  },
   savedBlogs: [{
     type: Schema.Types.ObjectId,
     ref: 'Blog'

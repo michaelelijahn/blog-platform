@@ -12,7 +12,7 @@ import { useSession } from 'next-auth/react';
 
 const Page = () => {
     const [loading, setLoading] = useState(true);
-    const { setEdited, userId } = useBlogContext();
+    const { userId, setRefetch } = useBlogContext();
     const [isCreator, setIsCreator] = useState(false);
     const [blog, setBlog] = useState("");
     const [error, setError] = useState("");
@@ -60,7 +60,6 @@ const Page = () => {
         });
         
         if (response.ok) {
-          setEdited(true);
           router.prefetch("/");
           router.push("/");
         } else {

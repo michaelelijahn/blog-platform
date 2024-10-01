@@ -12,10 +12,6 @@ const UserProviderSchema = new Schema({
     image: {
         type: String
     },
-    isCreator: {
-        type: Boolean,
-        default: false,
-    },
     savedBlogs: [{
         type: Schema.Types.ObjectId,
         ref: 'Blog'
