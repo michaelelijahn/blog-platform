@@ -1,5 +1,50 @@
+// "use client"
+// import React, { useEffect, useState } from 'react';
+// import BlogCard from './BlogCard';
+// import Loading from './Loading';
+// import SearchIcon from '@mui/icons-material/Search';
+// import { useBlogContext } from './BlogsContext';
+
+// const Blogs = ({ title, blogs }) => {
+
+//   const { loading } = useBlogContext(); // Access separate loading states
+
+//   return (
+//     <div className='flex flex-col items-center sm:items-start'>
+//       <span className='flex gap-2 sm:text-start mb-10 w-[70vw] max-w-[700px] md:w-[45vw] lg:w-[40vw] lg:max-w-[1200px] pl-3 border border-solid border-gray-300 py-1 rounded-full'>
+//         <SearchIcon/>
+//         <input 
+//           type="text" 
+//           className='w-full border-none outline-none focus:ring-0 focus:outline-none bg-transparent'
+//           placeholder={`I'm looking for...`}
+//         />
+//       </span>
+//       <p className='font-semibold text-2xl py-2 mb-4'>{title}</p>
+//       { loading ? (
+//         <Loading/> // Show loading spinner only on initial load
+//       ) : (
+//         <div className='grid grid-cols-1 lg:grid-cols-3 sm:gap-8'>
+//           {blogs && blogs.length > 0 && blogs.map((b) => (
+//             <BlogCard 
+//               key={b._id} 
+//               id={b._id} 
+//               title={b.title}
+//               author={b.author} 
+//               image={b.image} 
+//               date={b.createdAt}
+//               savedStatus={b.savedStatus}
+//             />
+//           ))}
+//           {blogs && blogs.length === 0 && <h1>No Blogs</h1>}
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default Blogs;
 "use client"
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import BlogCard from './BlogCard';
 import Loading from './Loading';
 import SearchIcon from '@mui/icons-material/Search';
@@ -7,6 +52,10 @@ import { useBlogContext } from './BlogsContext';
 
 const Blogs = ({ title, filterSaved = false }) => {
   const { blogs, loading } = useBlogContext();
+
+  useEffect(() => {
+    console.log("blogs test: ", blogs);
+  }, [blogs])
 
   const filteredBlogs = filterSaved ? blogs.filter(blog => blog.savedStatus) : blogs;
 
@@ -25,17 +74,17 @@ const Blogs = ({ title, filterSaved = false }) => {
         <Loading/>
       ) : (
         <div className='grid grid-cols-1 lg:grid-cols-3 sm:gap-8'>
-          {filteredBlogs.map((blog) => (
+          {filteredBlogs?.map((blog) => (
             <BlogCard 
-              key={blog._id} 
-              id={blog._id} 
-              title={blog.title}
-              author={blog.author} 
-              image={blog.image} 
-              date={blog.createdAt}
+              key={blog?._id} 
+              id={blog?._id} 
+              title={blog?.title}
+              author={blog?.author} 
+              image={blog?.image} 
+              date={blog?.createdAt}
             />
           ))}
-          {filteredBlogs.length === 0 && <h1>No Blogs</h1>}
+          {filteredBlogs?.length === 0 && <h1>No Blogs</h1>}
         </div>
       )}
     </div>
