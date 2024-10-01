@@ -5,20 +5,20 @@ import UserProvider from "@/models/userProvider";
 
 export const GET = async (req) => {
     try {
-        // console.log("trying to get all blogs");
-        // const startTime = Date.now();
 
         const email = req.headers.get('email');
         const name = req.headers.get('name');
 
-        // console.log("email  test : ", email);
-        // console.log("name  test : ", name);
+        await connectToDB();
+        const blogs = await Blog.find({});
 
-        if (!email || !name) {
-            return new Response("Missing email or name", { status : 401 });
+        if (email === "undefined" && name === "undefined") {
+            return new Response(JSON.stringify({
+                userId: null,
+                blogs,
+            }), { status : 200 });
         }
 
-        await connectToDB();
         let user = await User.findOne({ email });
         
         if (!user || user.name !== name) {
@@ -28,12 +28,8 @@ export const GET = async (req) => {
         if (!user) {
             return new Response("User not found", { status: 401 });
         }
-        // console.log("user test : ", user); 
 
-        const blogs = await Blog.find({});
-        // console.log("blogs : ", blogs);
-        // const endTime = Date.now();
-        // console.log(`getBlogs API took ${endTime - startTime} ms`); 
+        // console.log("user test : ", user); 
 
         const savedBlogIds = new Set(user.savedBlogs.map(id => id.toString()));
 
@@ -51,6 +47,53 @@ export const GET = async (req) => {
             userId: user._id,
             blogs: updatedBlogs,
         }), { status : 200 });
+
+
+        // if (!email || !name) {
+        //     return new Response("Missing email or name", { status : 401 });
+        // }
+
+        // await connectToDB();
+        // let user = await User.findOne({ email });
+        
+        // if (!user || user.name !== name) {
+        //     user = await UserProvider.findOne({ email });
+        // }
+        
+        // // if (!user) {
+        // //     return new Response("User not found", { status: 401 });
+        // // }
+        // // console.log("user test : ", user); 
+
+        // const blogs = await Blog.find({});
+        // console.log("blogs : ", blogs);
+        // // const endTime = Date.now();
+        // // console.log(`getBlogs API took ${endTime - startTime} ms`); 
+
+        // if (user) {
+        //     const savedBlogIds = new Set(user.savedBlogs.map(id => id.toString()));
+    
+        //     // console.log("savedBlogIds test : ", savedBlogIds);
+    
+        //     // console.log("updatedBlogs attempt ");
+    
+        //     let updatedBlogs = blogs.map(blog => ({
+        //         ...blog._doc,
+        //         savedStatus: savedBlogIds.has(blog._id.toString())
+        //     }));
+    
+        //     // console.log("updatedBlogs test : ", updatedBlogs);
+        //     return new Response(JSON.stringify({
+        //         userId: user._id,
+        //         blogs: updatedBlogs,
+        //     }), { status : 200 });
+        // } else {
+        //     return new Response(JSON.stringify({
+        //         userId: null,
+        //         blogs,
+        //     }), { status : 200 });
+        // }
+
     } catch (e) {
         return new Response("Failed to fetch all blogs", { status : 500 });
     }

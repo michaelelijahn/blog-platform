@@ -5,11 +5,12 @@ import React, { useState, useEffect } from 'react'
 import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { assets } from '@/assets/assets'
+import CreateIcon from '@mui/icons-material/Create';
 
 const Header = () => {
   const [mounted, setMounted] = useState(false);
   const [toggleDropdown, setToggleDropdown] = useState(false);
-  const { data : session } = useSession();
+  const { data : session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -34,6 +35,7 @@ const Header = () => {
               <li className='dropdown-link'><Link href="/about-us" className='' onClick={() => setToggleDropdown(false)}>About Us</Link></li>
               <li className='dropdown-link'><Link href="/advantages" className='' onClick={() => setToggleDropdown(false)}>Advantages</Link></li>
               <li className='dropdown-link'><Link href="/blog" prefetch={true} className='' onClick={() => setToggleDropdown(false)}>Saved Blogs</Link></li>
+              { status === "authenticated" && <li className='dropdown-link'><Link href="/create-blog" className='' onClick={() => setToggleDropdown(false)}>Write</Link></li> }
               {
                 session?.user ? 
                   <button className='light-btn w-full' onClick={() => {
@@ -75,7 +77,7 @@ const Header = () => {
             Advantages
             <span className=' w-full h-0.5 bg-black transform scale-x-0 origin-left transition-transform duration-300 ease-out group-hover:scale-x-100'></span>
           </Link>
-
+          
           <Link href="/blog" className='flex flex-col justify-center items-center group mb-1'>
             <p>Saved Blogs</p>
             <span className='w-full h-0.5 bg-black transform scale-x-0 origin-left transition-transform duration-300 ease-out group-hover:scale-x-100'></span>
@@ -85,6 +87,12 @@ const Header = () => {
         <div className='flex gap-2'>
           {session?.user ?
             <>
+             <Link href="/create-blog" className=" px-4 py-2 shadow-2xl bg-blue-700 hover:bg-blue-800 text-center rounded-full text-white" >
+              <div className="flex justify-center items-center gap-3">
+                <p className="text-md">Write</p> 
+                <CreateIcon sx={{color: "white", fontSize: 25}}/>
+              </div>
+            </Link> 
               <button className='colored-btn' onClick={() => {
                 signOut();
                 router.push("/");

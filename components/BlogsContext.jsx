@@ -122,7 +122,7 @@ export const BlogProvider = ({ children }) => {
       const data = await response.json();
       // console.log("all blogs test :", data);
       setBlogs(data.blogs);
-      setUserId(data.userId);
+      setUserId(data.userId || null);
     } catch (error) {
       console.error("Error fetching blogs:", error);
     }
@@ -130,8 +130,8 @@ export const BlogProvider = ({ children }) => {
 
   const fetchData = async () => {
     setLoading(true);
+    await getBlogs(); // Fetch blogs first
     if (session && session.user) {
-      await getBlogs(); // Fetch blogs first
     }
     setLoading(false);
   };

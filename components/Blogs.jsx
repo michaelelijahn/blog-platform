@@ -5,9 +5,15 @@
 // import SearchIcon from '@mui/icons-material/Search';
 // import { useBlogContext } from './BlogsContext';
 
-// const Blogs = ({ title, blogs }) => {
+// const Blogs = ({ title, filterSaved = false }) => {
+//   const { blogs, loading } = useBlogContext();
+//   const [searchTerm, setSearchTerm] = useState('');
 
-//   const { loading } = useBlogContext(); // Access separate loading states
+//   useEffect(() => {
+//     console.log("blogs test: ", blogs);
+//   }, [blogs])
+
+//   const filteredBlogs = filterSaved ? blogs.filter(blog => blog.savedStatus) : blogs;
 
 //   return (
 //     <div className='flex flex-col items-center sm:items-start'>
@@ -17,25 +23,26 @@
 //           type="text" 
 //           className='w-full border-none outline-none focus:ring-0 focus:outline-none bg-transparent'
 //           placeholder={`I'm looking for...`}
+//           value={searchTerm}
+//           onChange={(e) => setSearchTerm(e.target.value)}
 //         />
 //       </span>
 //       <p className='font-semibold text-2xl py-2 mb-4'>{title}</p>
 //       { loading ? (
-//         <Loading/> // Show loading spinner only on initial load
+//         <Loading/>
 //       ) : (
 //         <div className='grid grid-cols-1 lg:grid-cols-3 sm:gap-8'>
-//           {blogs && blogs.length > 0 && blogs.map((b) => (
+//           {filteredBlogs?.map((blog) => (
 //             <BlogCard 
-//               key={b._id} 
-//               id={b._id} 
-//               title={b.title}
-//               author={b.author} 
-//               image={b.image} 
-//               date={b.createdAt}
-//               savedStatus={b.savedStatus}
+//               key={blog?._id} 
+//               id={blog?._id} 
+//               title={blog?.title}
+//               author={blog?.author} 
+//               image={blog?.image} 
+//               date={blog?.createdAt}
 //             />
 //           ))}
-//           {blogs && blogs.length === 0 && <h1>No Blogs</h1>}
+//           {filteredBlogs?.length === 0 && <h1>No Blogs</h1>}
 //         </div>
 //       )}
 //     </div>
@@ -43,8 +50,9 @@
 // };
 
 // export default Blogs;
+
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import BlogCard from './BlogCard';
 import Loading from './Loading';
 import SearchIcon from '@mui/icons-material/Search';
@@ -52,12 +60,13 @@ import { useBlogContext } from './BlogsContext';
 
 const Blogs = ({ title, filterSaved = false }) => {
   const { blogs, loading } = useBlogContext();
-
-  useEffect(() => {
-    console.log("blogs test: ", blogs);
-  }, [blogs])
+  const [searchTerm, setSearchTerm] = useState('');
 
   const filteredBlogs = filterSaved ? blogs.filter(blog => blog.savedStatus) : blogs;
+
+  const searchFilteredBlogs = filteredBlogs.filter((blog) => 
+    blog?.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className='flex flex-col items-center sm:items-start'>
@@ -67,6 +76,8 @@ const Blogs = ({ title, filterSaved = false }) => {
           type="text" 
           className='w-full border-none outline-none focus:ring-0 focus:outline-none bg-transparent'
           placeholder={`I'm looking for...`}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
       </span>
       <p className='font-semibold text-2xl py-2 mb-4'>{title}</p>
@@ -74,7 +85,7 @@ const Blogs = ({ title, filterSaved = false }) => {
         <Loading/>
       ) : (
         <div className='grid grid-cols-1 lg:grid-cols-3 sm:gap-8'>
-          {filteredBlogs?.map((blog) => (
+          {searchFilteredBlogs.map((blog) => (
             <BlogCard 
               key={blog?._id} 
               id={blog?._id} 
@@ -84,7 +95,7 @@ const Blogs = ({ title, filterSaved = false }) => {
               date={blog?.createdAt}
             />
           ))}
-          {filteredBlogs?.length === 0 && <h1>No Blogs</h1>}
+          {searchFilteredBlogs.length === 0 && <h1>No Blogs Found</h1>}
         </div>
       )}
     </div>
