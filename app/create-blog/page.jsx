@@ -2,28 +2,31 @@
 import React, { useState } from 'react'
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { convertToBase64 } from '../utils/utils';
+import { useBlogContext } from '@/components/BlogsContext';
+import { setRef } from '@mui/material';
 
 const CreateBlogPage = () => {
+    const { setRefetch } = useBlogContext();
     const [title, setTitle] = useState("");
     const [blog, setBlog] = useState("");
     const [author, setAuthor] = useState("");
     const [image, setImage] = useState({ myFile : ""});
+    const [file, setFile] = useState();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { data: session } = useSession();
     const router = useRouter();
 
-    const handleFileUpload = async (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            try {
-                const base64 = await convertToBase64(file);
-                setImage({ ...image, myFile: base64 });
-            } catch (error) {
-                console.error('Error converting file to base64:', error);
-            }
-        }
-    };
+    // const handleFileUpload = async (e) => {
+    //     const file = e.target.files[0];
+    //     if (file) {
+    //         try {
+    //             const base64 = await convertToBase64(file);
+    //             setImage({ ...image, myFile: base64 });
+    //         } catch (error) {
+    //             console.error('Error converting file to base64:', error);
+    //         }
+    //     }
+    // };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -31,23 +34,24 @@ const CreateBlogPage = () => {
         setIsSubmitting(true);
 
         try {
+            const formData = new FormData();
+            formData.append('email', session?.user?.email);
+            formData.append('name', session?.user?.name);
+            if (file) {
+                formData.append('image', file);
+            }
+            formData.append('title', title);
+            formData.append('blog', blog);
+            formData.append('author', author);
+
             const response = await fetch("/api/blog/new", {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email: session?.user?.email,
-                    name: session?.user?.name,
-                    // creator: session?.user.id,
-                    image: image.myFile,
-                    title,
-                    blog,
-                    author
-                }),
+                body: formData, // Send formData directly
+                // Remove the Content-Type header
             });
 
             if (response.ok) {
+                setRefetch(true);
                 router.prefetch("/");
                 router.push("/");
             } else {
@@ -59,6 +63,7 @@ const CreateBlogPage = () => {
             setIsSubmitting(false);
         }
     }
+
 
     return (
         <div className='mt-20 w-full'>
@@ -88,7 +93,7 @@ const CreateBlogPage = () => {
                         name='myFile'
                         accept='.jpeg, .png, .jpg'
                         className='pb-4' 
-                        onChange={(e) => handleFileUpload(e)}
+                        onChange={(e) => setFile(e.target.files[0])}
                     />
                     <div className='flex justify-between'>
                         <button type="button" className='rounded-full border border-red-600 bg-red-600 py-1.5 px-5 text-white transition-all hover:bg-red-700 hover:border-red-700 text-center text-sm flex items-center justify-center' onClick={() => router.push("/")}>

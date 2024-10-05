@@ -38,7 +38,7 @@ const Blogs = ({ title, filterSaved = false }) => {
               id={blog?._id} 
               title={blog?.title}
               author={blog?.author} 
-              image={blog?.image} 
+              image={blog?.image}
               date={blog?.createdAt}
             />
           ))}

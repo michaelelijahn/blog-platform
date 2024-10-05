@@ -4,8 +4,9 @@ import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
 import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { assets } from '@/assets/assets'
 import CreateIcon from '@mui/icons-material/Create';
+import Avatar from '@mui/material/Avatar';
+import { blueGrey } from '@mui/material/colors'
 
 const Header = () => {
   const [mounted, setMounted] = useState(false);
@@ -31,10 +32,10 @@ const Header = () => {
           <button className='light-btn' onClick={() => setToggleDropdown((prev) => (!prev))}>Menu</button>
           {toggleDropdown && (
             <ul className='dropdown'>
+              <li className='dropdown-link'><Link href="/profile" className='' onClick={() => setToggleDropdown(false)}>Profile</Link></li>
               <li className='dropdown-link'><Link href="/" prefetch={true} className='' onClick={() => setToggleDropdown(false)}>Home</Link></li>
               <li className='dropdown-link'><Link href="/about-us" className='' onClick={() => setToggleDropdown(false)}>About Us</Link></li>
-              <li className='dropdown-link'><Link href="/advantages" className='' onClick={() => setToggleDropdown(false)}>Advantages</Link></li>
-              <li className='dropdown-link'><Link href="/blog" prefetch={true} className='' onClick={() => setToggleDropdown(false)}>Saved Blogs</Link></li>
+              { session?.user && <li className='dropdown-link'><Link href="/blog" prefetch={true} className='' onClick={() => setToggleDropdown(false)}>Saved Blogs</Link></li> }
               { status === "authenticated" && <li className='dropdown-link'><Link href="/create-blog" className='' onClick={() => setToggleDropdown(false)}>Write</Link></li> }
               {
                 session?.user ? 
@@ -73,15 +74,11 @@ const Header = () => {
             <span className=' w-full h-0.5 bg-black transform scale-x-0 origin-left transition-transform duration-300 ease-out group-hover:scale-x-100'></span>
           </Link>
 
-          <Link href="/advantages" className='flex flex-col justify-center items-center group mb-1'>
-            Advantages
-            <span className=' w-full h-0.5 bg-black transform scale-x-0 origin-left transition-transform duration-300 ease-out group-hover:scale-x-100'></span>
-          </Link>
-          
-          <Link href="/blog" className='flex flex-col justify-center items-center group mb-1'>
+          {session?.user && 
+            <Link href="/blog" className='flex flex-col justify-center items-center group mb-1'>
             <p>Saved Blogs</p>
             <span className='w-full h-0.5 bg-black transform scale-x-0 origin-left transition-transform duration-300 ease-out group-hover:scale-x-100'></span>
-          </Link>
+          </Link>}
         </div>
 
         <div className='flex gap-2'>
@@ -98,7 +95,11 @@ const Header = () => {
                 router.push("/");
               }}>Sign Out</button>
               <Link href="/profile">
-                <Image className='rounded-full' src={session && session.user ? session.user.image : assets.profile_icon} width={40} height={40}/>
+                {session?.user?.image && session?.user?.name ? 
+                  <Image className='rounded-full' src={session?.user?.image} width={40} height={40}/>
+                  :
+                  <Avatar sx={{bgcolor: blueGrey}} />
+                }
               </Link>
             </>
             :
