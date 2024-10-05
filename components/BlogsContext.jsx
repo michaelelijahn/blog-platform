@@ -22,27 +22,24 @@ export const BlogProvider = ({ children }) => {
     );
   };
 
-  const getBlogs = async () => {
-    try {
-      // console.log("trying to get blogs");
-      const response = await fetch('/api/blog', {
-        method: 'GET', 
-        headers: { 
-          'Content-Type': 'application/json',
-          'email': session?.user?.email,
-          'name': session?.user?.name,
-        },
-      });
-      const data = await response.json();
-      console.log("all blogs :", data);
-      setBlogs(data.blogs);
-      setUserId(data.userId || null);
-    } catch (error) {
-      console.error("Error fetching blogs:", error);
-    }
-  };
-
   const fetchData = async () => {
+    const getBlogs = async () => {
+      try {
+        const response = await fetch('/api/blog', {
+          method: 'GET', 
+          headers: { 
+            'Content-Type': 'application/json',
+            'email': session?.user?.email,
+            'name': session?.user?.name,
+          },
+        });
+        const data = await response.json();
+        setBlogs(data.blogs);
+        setUserId(data.userId || null);
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+      }
+    };
     setLoading(true);
     await getBlogs(); // Fetch blogs first
     setLoading(false);
@@ -54,7 +51,6 @@ export const BlogProvider = ({ children }) => {
     if (refetch) {
       setRefetch(false);
     }
-    // console.log("session : ", session);
   }, [session, refetch]);
 
   return (
@@ -64,7 +60,6 @@ export const BlogProvider = ({ children }) => {
       userId, 
       loading, 
       updateBlogSavedStatus,
-      refetchData: fetchData,
       setRefetch
     }}>
       {children}

@@ -1,6 +1,7 @@
 import { connectToDB } from "@/app/utils/database";
 import Blog from "@/models/blog";
 import { NextResponse } from 'next/server';
+import { writeFile } from "fs/promises";
 
 export const GET = async (req, { params }) => {
 
@@ -31,22 +32,37 @@ export async function PUT(req, { params }) {
     try {
         await connectToDB();
 
-        const { image, title, blog, author } = await req.json();
-        console.log (image, title, blog, author);
+        const formData = await req.formData();
+
+        const timeStamp = Date.now();
+    
+        const image = formData.get('image');
+        const imageByteData = await image.arrayBuffer();
+    
+        const buffer = Buffer.from(imageByteData);
+        const path = `./public/${timeStamp}_${image.name}`;
+    
+        await writeFile(path, buffer);
+    
+        const imgUrl = `/${timeStamp}_${image.name}`;
+
+        const title = `${formData.get('title')}`;
+        const blog = `${formData.get('blog')}`;
+        const author = `${formData.get('author')}`;
+
         const existingBlog = await Blog.findById(id);
 
         if (!existingBlog) {
             return new Response("Blog not found", { status : 404 });
         }
-        existingBlog.image = image;
+        
+        existingBlog.image = imgUrl;
         existingBlog.title = title;
         existingBlog.author = author;
         existingBlog.blog = Array.isArray(blog) ? blog.join('\n\n') : blog;
-        
-        await existingBlog.save();
-        console.log("testts")
-        return new Response(JSON.stringify(existingBlog), { status : 200 });
 
+        await existingBlog.save();
+        return new Response(JSON.stringify(existingBlog), { status : 200 });
     } catch (e) {
         console.error('Error creating blog:', e);
         return new Response("Failed to update blog", { status : 500 });

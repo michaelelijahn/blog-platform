@@ -1,24 +1,3 @@
-// "use client"
-// import React, { useState, useEffect } from 'react'
-// import Header from '@/components/Header'
-// import Blogs from '@/components/Blogs'
-// import { useBlogContext } from '@/components/BlogsContext'
-// import Loading from '@/components/Loading'
-
-// const page = () => {
-
-//   const { savedBlogs, loading } = useBlogContext();
-
-//   return (
-//     <>
-//       <Header />
-//       {loading && <Loading/>}
-//       { !loading && savedBlogs && <Blogs title={'Saved Blogs'} blogs={savedBlogs} /> }
-//     </>
-//   )
-// }
-
-// export default page
 import Blogs from "@/components/Blogs";
 import Header from "@/components/Header";
 

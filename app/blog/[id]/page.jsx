@@ -12,7 +12,7 @@ import { useSession } from 'next-auth/react';
 
 const Page = () => {
     const [loading, setLoading] = useState(true);
-    const { userId, setRefetch } = useBlogContext();
+    const { userId } = useBlogContext();
     const [isCreator, setIsCreator] = useState(false);
     const [blog, setBlog] = useState("");
     const [error, setError] = useState("");

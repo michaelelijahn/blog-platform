@@ -10,23 +10,10 @@ const CreateBlogPage = () => {
     const [title, setTitle] = useState("");
     const [blog, setBlog] = useState("");
     const [author, setAuthor] = useState("");
-    const [image, setImage] = useState({ myFile : ""});
-    const [file, setFile] = useState();
+    const [file, setFile] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { data: session } = useSession();
     const router = useRouter();
-
-    // const handleFileUpload = async (e) => {
-    //     const file = e.target.files[0];
-    //     if (file) {
-    //         try {
-    //             const base64 = await convertToBase64(file);
-    //             setImage({ ...image, myFile: base64 });
-    //         } catch (error) {
-    //             console.error('Error converting file to base64:', error);
-    //         }
-    //     }
-    // };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -46,8 +33,7 @@ const CreateBlogPage = () => {
 
             const response = await fetch("/api/blog/new", {
                 method: 'POST',
-                body: formData, // Send formData directly
-                // Remove the Content-Type header
+                body: formData, 
             });
 
             if (response.ok) {

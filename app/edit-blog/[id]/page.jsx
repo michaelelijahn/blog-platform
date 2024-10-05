@@ -12,25 +12,14 @@ const page = () => {
     const [author, setAuthor] = useState("");
     const [prevImage, setPrevImage] = useState("");
     const [image, setImage] = useState({ myFile : ""});
-    const { setEdited } = useBlogContext();
+    const [file, setFile] = useState("");
+    const { setRefetch } = useBlogContext();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [loading, setLoading] = useState(true);
     const { data: session } = useSession();
     const router = useRouter();
     const params = useParams();
     const { id } = params;
-
-    const handleFileUpload = async (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            try {
-                const base64 = await convertToBase64(file);
-                setImage({ ...image, myFile: base64 });
-            } catch (error) {
-                console.error('Error converting file to base64:', error);
-            }
-        }
-    };
 
     useEffect(() => {
         const fetchBlog = async () => {
@@ -67,22 +56,30 @@ const page = () => {
         setIsSubmitting(true);
 
         try {
+            const formData = new FormData();
+            // formData.append('creator', session?.user?.id);
+            formData.append('image', file || prevImage);
+            formData.append('title', title);
+            formData.append('blog', blog);
+            formData.append('author', author);
+
             const response = await fetch(`/api/blog/${id}`, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    creator: session?.user.id,
-                    image: image.myFile || prevImage,
-                    title,
-                    blog,
-                    author
-                }),
+                // headers: {
+                //     'Content-Type': 'application/json',
+                // },
+                // body: JSON.stringify({
+                //     creator: session?.user.id,
+                //     image: image.myFile || prevImage,
+                //     title,
+                //     blog,
+                //     author
+                // }),
+                body: formData,
             });
 
             if (response.ok) {
-                setEdited(true);
+                setRefetch(true);
                 router.prefetch("/");
                 router.push("/");
             } else {
@@ -123,7 +120,7 @@ const page = () => {
                         name='myFile'
                         accept='.jpeg, .png, .jpg'
                         className='pb-4' 
-                        onChange={(e) => handleFileUpload(e)}
+                        onChange={(e) => setFile(e.target.files[0])}
                     />
                     <div className='flex justify-between'>
                         <button type="button" className='rounded-full border border-red-600 bg-red-600 py-1.5 px-5 text-white transition-all hover:bg-red-700 hover:border-red-700 text-center text-sm flex items-center justify-center' onClick={() => router.push("/")}>
