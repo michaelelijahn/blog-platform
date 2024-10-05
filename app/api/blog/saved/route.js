@@ -2,7 +2,6 @@ import { connectToDB } from "@/app/utils/database";
 import Blog from "@/models/blog";
 import User from "@/models/user";
 import UserProvider from "@/models/userProvider";
-import { getSession } from "next-auth/react";
 
 export async function POST (req) {
 
@@ -62,7 +61,6 @@ export async function GET (req) {
     if (!email || !name) {
         return new Response("Missing email or name", { status : 401 });
     }
-    // console.log("passed email and name check ");
 
     try {
         await connectToDB();
@@ -73,15 +71,11 @@ export async function GET (req) {
             user = await UserProvider.findOne({ email });
         }
 
-        // console.log("found user : ", user);
-
         if (!user) {
             return new Response("User not found", { status: 401 });
         }
 
         await user.populate('savedBlogs');
-
-        // console.log("populate user");
 
         return new Response(JSON.stringify(user.savedBlogs), { status: 200 });
     } catch (error) {

@@ -8,7 +8,6 @@ import { Avatar } from '@mui/material'
 import Header from '@/components/Header'
 import Image from 'next/image'
 
-
 const Page = () => {
   const { blogs, userId, loading } = useBlogContext()
   const { data: session } = useSession()
@@ -18,14 +17,14 @@ const Page = () => {
   const [originalEmail, setOriginalEmail] = useState('')
   const [isEditing, setIsEditing] = useState(false)
 
-  const ownedBlogs = blogs && blogs.filter(blog => blog.creator === userId)
+  const ownedBlogs = blogs?.filter(blog => blog.creator === userId);
 
   useEffect(() => {
     if (session?.user?.name && session?.user?.email) {
-      setName(session.user.name)
-      setEmail(session.user.email)
-      setOriginalName(session.user.name)
-      setOriginalEmail(session.user.email)
+      setName(session.user.name);
+      setEmail(session.user.email);
+      setOriginalName(session.user.name);
+      setOriginalEmail(session.user.email);
     }
   }, [session])
 
@@ -34,9 +33,6 @@ const Page = () => {
   }
 
   const handleConfirm = async () => {
-    setOriginalName(name)
-    setOriginalEmail(email)
-
     try {
       const response = await fetch('/api/auth/update', {
         method: 'POST',
@@ -48,15 +44,22 @@ const Page = () => {
           email,
           name,
         })
-      })
-    } catch (e) {
-      console.error('Error updating user', error);
-    } finally {
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to update user');
+      }
+
+      setOriginalName(name)
+      setOriginalEmail(email)
+      // alert('Profile updated successfully!')
       setIsEditing(false)
+    } catch (error) {
+      console.error('Error updating user', error);
+      alert(error.message || 'An error occurred while updating the profile');
     }
-    // Here you would typically send the updated name and email to your backend
-    console.log('Name updated to:', name)
-    console.log('Email updated to:', email)
   }
 
   const handleCancel = () => {
@@ -68,10 +71,10 @@ const Page = () => {
   return (
     <>
       <Header />
-      <p className='text-4xl font-bold'>Profile</p>
-      <div className='flex flex-col justify-center items-center glassmorphism w-[80vw] my-12'>
+      <p className='text-4xl font-bold'>My Profile Page</p>
+      <div className='flex flex-col justify-center items-center glassmorphism w-[80vw] my-4'>
         {session?.user?.image && session?.user?.name ? 
-          <Image className='rounded-full mb-10 mt-4' src={session?.user?.image} width={100} height={100}/>
+          <Image className='rounded-full mb-10 mt-4' src={session?.user?.image} width={100} height={100} alt="User profile"/>
           :
           <Avatar sx={{ width: 100, height: 100 }} className='mb-10 mt-4' />
         }
@@ -123,7 +126,7 @@ const Page = () => {
       {loading ? (
         <Loading/>
       ) : (
-        <div className='grid grid-cols-1 lg:grid-cols-3 sm:gap-8'>
+        <div className='grid grid-cols-1 lg:grid-cols-3 sm:gap-8 mb-20'>
           {ownedBlogs.map((blog) => (
             <BlogCard 
               key={blog?._id} 

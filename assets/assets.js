@@ -44,6 +44,8 @@ export const assets = {
     google,
     apple,
     github,
+    blog_pic_12,
+    blog_pic_6,
 }
 
     export const blog_data = [{

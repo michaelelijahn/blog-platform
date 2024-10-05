@@ -1,8 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react';
 import { useParams, useRouter } from 'next/navigation';
-import { convertToBase64 } from '@/app/utils/utils';
 import Loading from '@/components/Loading';
 import { useBlogContext } from '@/components/BlogsContext';
 
@@ -11,12 +9,10 @@ const page = () => {
     const [blog, setBlog] = useState("");
     const [author, setAuthor] = useState("");
     const [prevImage, setPrevImage] = useState("");
-    const [image, setImage] = useState({ myFile : ""});
     const [file, setFile] = useState("");
     const { setRefetch } = useBlogContext();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [loading, setLoading] = useState(true);
-    const { data: session } = useSession();
     const router = useRouter();
     const params = useParams();
     const { id } = params;
@@ -57,7 +53,6 @@ const page = () => {
 
         try {
             const formData = new FormData();
-            // formData.append('creator', session?.user?.id);
             formData.append('image', file || prevImage);
             formData.append('title', title);
             formData.append('blog', blog);
@@ -65,16 +60,6 @@ const page = () => {
 
             const response = await fetch(`/api/blog/${id}`, {
                 method: 'PUT',
-                // headers: {
-                //     'Content-Type': 'application/json',
-                // },
-                // body: JSON.stringify({
-                //     creator: session?.user.id,
-                //     image: image.myFile || prevImage,
-                //     title,
-                //     blog,
-                //     author
-                // }),
                 body: formData,
             });
 

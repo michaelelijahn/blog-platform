@@ -3,17 +3,26 @@ import React, { useState } from 'react'
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useBlogContext } from '@/components/BlogsContext';
-import { setRef } from '@mui/material';
 
 const CreateBlogPage = () => {
     const { setRefetch } = useBlogContext();
-    const [title, setTitle] = useState("");
-    const [blog, setBlog] = useState("");
-    const [author, setAuthor] = useState("");
-    const [file, setFile] = useState("");
+    const [formData, setFormData] = useState({
+        title: "",
+        blog: "",
+        author: "",
+        file: null
+    });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { data: session } = useSession();
     const router = useRouter();
+
+    const handleChange = (e) => {
+        const { name, value, files } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: files ? files[0] : value
+        }));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,19 +30,19 @@ const CreateBlogPage = () => {
         setIsSubmitting(true);
 
         try {
-            const formData = new FormData();
-            formData.append('email', session?.user?.email);
-            formData.append('name', session?.user?.name);
-            if (file) {
-                formData.append('image', file);
+            const submitFormData = new FormData();
+            submitFormData.append('email', session?.user?.email);
+            submitFormData.append('name', session?.user?.name);
+            if (formData.file) {
+                submitFormData.append('image', formData.file);
             }
-            formData.append('title', title);
-            formData.append('blog', blog);
-            formData.append('author', author);
+            submitFormData.append('title', formData.title);
+            submitFormData.append('blog', formData.blog);
+            submitFormData.append('author', formData.author);
 
             const response = await fetch("/api/blog/new", {
                 method: 'POST',
-                body: formData, 
+                body: submitFormData, 
             });
 
             if (response.ok) {
@@ -50,36 +59,38 @@ const CreateBlogPage = () => {
         }
     }
 
-
     return (
         <div className='mt-20 w-full'>
             <h1 className='text-center text-4xl sm:text-left py-3 mb-10 sm:mb-16 font-extrabold sm:header-text blue-gradient'>Create Your Own Blog</h1>
             <div className='mx-auto sm:m-0 w-[50vw] h-fit min-h-[80vh] glassmorphism'>
                 <form onSubmit={handleSubmit}>
                     <input 
-                        onChange={(e) => setTitle(e.target.value)} 
-                        value={title}
+                        name="title"
+                        onChange={handleChange} 
+                        value={formData.title}
                         className='w-full text-center sm:text-left p-2 pl-4 mt-1 bg-transparent rounded-full text-2xl' 
                         placeholder='Your Blog Post Title'
                     />
                     <textarea 
-                        onChange={(e) => setBlog(e.target.value)} 
-                        value={blog}
+                        name="blog"
+                        onChange={handleChange} 
+                        value={formData.blog}
                         className='w-full border border-gray-300 h-[60vh] rounded-lg my-2 pl-2 py-2' 
                     />
                     <input 
-                        onChange={(e) => setAuthor(e.target.value)}
-                        value={author}
+                        name="author"
+                        onChange={handleChange}
+                        value={formData.author}
                         className='w-3/4 border border-gray-300 text-center sm:text-left p-2 pl-4 mt-1 mb-4 bg-transparent rounded-full text-md' 
                         type="text" 
                         placeholder='Author' 
                     />
                     <input 
                         type="file" 
-                        name='myFile'
+                        name='file'
                         accept='.jpeg, .png, .jpg'
                         className='pb-4' 
-                        onChange={(e) => setFile(e.target.files[0])}
+                        onChange={handleChange}
                     />
                     <div className='flex justify-between'>
                         <button type="button" className='rounded-full border border-red-600 bg-red-600 py-1.5 px-5 text-white transition-all hover:bg-red-700 hover:border-red-700 text-center text-sm flex items-center justify-center' onClick={() => router.push("/")}>

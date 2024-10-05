@@ -22,7 +22,7 @@ export const GET = async (req) => {
         // Fetch blogs with pagination
         // console.log('Fetch Blogs');
         const blogQuery = Blog.find({})
-            .select('title author createdAt blog image') // Include the blog field
+            .select('title author createdAt blog image creator') // Include the blog field
             .sort({ createdAt: -1 })
             .skip((page - 1) * limit)
             .limit(limit)
