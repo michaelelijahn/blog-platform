@@ -10,7 +10,7 @@ export const useBlogContext = () => useContext(BlogContext);
 export const BlogProvider = ({ children }) => {
   const { data: session } = useSession();
   const [blogs, setBlogs] = useState([]);
-  const [userId, setUserId] = useState(null);
+  // const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [refetch, setRefetch] = useState(false);
 
@@ -29,19 +29,20 @@ export const BlogProvider = ({ children }) => {
           method: 'GET', 
           headers: { 
             'Content-Type': 'application/json',
-            'email': session?.user?.email,
-            'name': session?.user?.name,
+            'userId': session?.user?.id,
+            // 'email': session?.user?.email,
+            // 'name': session?.user?.name,
           },
         });
         const data = await response.json();
         setBlogs(data.blogs);
-        setUserId(data.userId || null);
+        // setUserId(data.userId || null);
       } catch (error) {
         console.error("Error fetching blogs:", error);
       }
     };
     setLoading(true);
-    await getBlogs(); // Fetch blogs first
+    await getBlogs();
     setLoading(false);
   };
 
@@ -57,7 +58,7 @@ export const BlogProvider = ({ children }) => {
     <BlogContext.Provider value={{ 
       blogs, 
       setBlogs, 
-      userId, 
+      // userId, 
       loading, 
       updateBlogSavedStatus,
       setRefetch

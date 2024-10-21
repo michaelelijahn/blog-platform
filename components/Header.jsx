@@ -46,7 +46,7 @@ const Header = () => {
                   }}>Sign Out</button>
                 : 
                 <>
-                  <button className='light-btn w-full' onClick={() => setToggleDropdown(false)}><Link href="/sign-in">Sign In</Link></button>
+                  {/* <button className='light-btn w-full' onClick={() => setToggleDropdown(false)}><Link href="/sign-in">Sign In</Link></button> */}
                   <button className='colored-btn w-full' onClick={() => setToggleDropdown(false)}><Link href="/register">Get Started</Link></button>
                 </>
               }
@@ -104,7 +104,7 @@ const Header = () => {
             </>
             :
             <>
-              <button className='light-btn'><Link href="/sign-in">Sign In</Link></button>
+              {/* <button className='light-btn'><Link href="/sign-in">Sign In</Link></button> */}
               <button className='colored-btn'><Link href="/register">Get Started</Link></button>
             </>
           }

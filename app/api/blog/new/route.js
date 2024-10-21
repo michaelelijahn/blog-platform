@@ -10,17 +10,9 @@ export async function POST(req) {
         await connectToDB();
 
         const formData = await req.formData();
-
-        const email = `${formData.get('email')}`;
-        const name = `${formData.get('name')}`;
-
-        let creatorType = 'User';
-        let user = await User.findOne({ email });
-
-        if (!user || user.name !== name) {
-            user = await UserProvider.findOne({ email });
-            creatorType = 'UserProvider';
-        }
+        
+        const userId = `${formData.get('id')}`;
+        let user = await UserProvider.findOne({ id: userId });
 
         const timeStamp = Date.now();
     
@@ -36,7 +28,6 @@ export async function POST(req) {
 
         const newBlog = new Blog({
             creator : user._id,
-            creatorType,
             image : `${imgUrl}`,
             title: `${formData.get('title')}`,
             blog: `${formData.get('blog')}`,
@@ -48,7 +39,7 @@ export async function POST(req) {
         return NextResponse.json(savedBlog, { status: 201 });
         
     } catch (error) {
-        console.error('Error creating blog:', e);
+        console.error('Error creating blog:', error);
         return NextResponse.json({ error: "Failed to create a new blog" }, { status: 500 });
     }
 }

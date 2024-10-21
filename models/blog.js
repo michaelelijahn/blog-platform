@@ -5,11 +5,6 @@ const BlogSchema = new Schema({
         type: Schema.Types.ObjectId,
         required: true
     },
-        creatorType: {
-        type: String,
-        required: true,
-        enum: ['User', 'UserProvider'] 
-    },
     image: {
         type: String,
     },

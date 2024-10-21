@@ -9,7 +9,7 @@ import Header from '@/components/Header'
 import Image from 'next/image'
 
 const Page = () => {
-  const { blogs, userId, loading } = useBlogContext()
+  const { blogs, loading } = useBlogContext()
   const { data: session } = useSession()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -17,7 +17,7 @@ const Page = () => {
   const [originalEmail, setOriginalEmail] = useState('')
   const [isEditing, setIsEditing] = useState(false)
 
-  const ownedBlogs = blogs?.filter(blog => blog.creator === userId);
+  const ownedBlogs = blogs?.filter(blog => blog.creator === session?.user?.id);
 
   useEffect(() => {
     if (session?.user?.name && session?.user?.email) {
@@ -40,7 +40,7 @@ const Page = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId,
+          userId: session?.user?.id,
           email,
           name,
         })
@@ -54,7 +54,6 @@ const Page = () => {
 
       setOriginalName(name)
       setOriginalEmail(email)
-      // alert('Profile updated successfully!')
       setIsEditing(false)
     } catch (error) {
       console.error('Error updating user', error);

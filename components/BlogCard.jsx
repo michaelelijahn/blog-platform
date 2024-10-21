@@ -32,7 +32,7 @@ const BlogCard = ({ id, title, author, image, date }) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          email: session?.user?.email,
+          userId: session?.user?.id,
           id
         }),
       });

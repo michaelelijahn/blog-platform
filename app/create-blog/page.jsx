@@ -26,13 +26,12 @@ const CreateBlogPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (isSubmitting) return;
+        if (isSubmitting || !session) return;
         setIsSubmitting(true);
 
         try {
             const submitFormData = new FormData();
-            submitFormData.append('email', session?.user?.email);
-            submitFormData.append('name', session?.user?.name);
+            submitFormData.append('id', session?.user?.id);
             if (formData.file) {
                 submitFormData.append('image', formData.file);
             }
@@ -100,6 +99,7 @@ const CreateBlogPage = () => {
                             type="submit"
                             className='colored-btn' 
                             disabled={isSubmitting}
+                            onClick={handleSubmit}
                         >
                             {isSubmitting ? 'Creating...' : 'Create Blog'}
                         </button>

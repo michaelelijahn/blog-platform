@@ -1,7 +1,6 @@
 import Provider from "@/components/Provider";
 import "./globals.css";
 import { BlogProvider } from "@/components/BlogsContext";
-import Footer from "@/components/Footer";
 
 export const metadata = {
   title: "Blog Project",
@@ -20,7 +19,7 @@ export default function RootLayout({ children }) {
 
             <div className="app">
                 {children}
-                <Footer/>
+                {/* <Footer/> */}
             </div>
           </BlogProvider>
         </Provider>
