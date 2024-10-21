@@ -55,7 +55,7 @@ const BlogCard = ({ id, title, author, image, date }) => {
   const imagePath = image?.replace('./public', '');
 
   return (
-    <div className='w-[80vw] sm:w-[70vw] md:w-[45vw] lg:w-[25vw] h-fit rounded-2xl p-3 pt-4 shadow-lg'>
+    <div className='w-[80vw] sm:w-[70vw] md:w-[45vw] lg:w-[25vw] h-fit rounded-2xl p-3 pt-4'>
       <Image className='h-[22vh] rounded-3xl mb-5 shadow-lg w' alt='blog image' src={imagePath} width={370} height={30} />
       <div className='mb-3'>
         <div className='flex gap-2 items-center'>

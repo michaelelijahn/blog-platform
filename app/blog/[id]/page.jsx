@@ -83,11 +83,11 @@ const Page = () => {
                 {blog.image && (
                     <Image 
                         alt='blog image' 
-                        className='rounded-lg shadow-lg mb-10 w-full h-[40vw]' 
+                        className='rounded-lg shadow-lg mb-10 w-full h-[40vw] object-cover ' 
                         src={blog.image} 
                         width={1000} 
                         height={150} 
-                        layout="responsive"
+                        priority
                     />
                 )}
                 <div className='flex justify-between'>
