@@ -16,7 +16,7 @@ const AuthForm = () => {
   }
 
   return (
-    <div className='flex flex-col justify-start mt-32 py-5 min-w-[380px] w-[90vw] sm:w-[45vw] sm:h-[25vh] bg-slate-100 rounded-2xl shadow-md space-y-3'>
+    <div className='flex flex-col justify-center items-center mt-56 py-5 min-w-[380px] w-[90vw] sm:w-[45vw] sm:h-[25vh] bg-slate-100 rounded-2xl shadow-md space-y-3'>
       <h1 className='text-2xl py-5 font-semibold text-center'>Continue with Google </h1>
 
       <div className='flex flex-col justify-center items-center gap-4 w-full'>
