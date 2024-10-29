@@ -104,7 +104,6 @@ const Header = () => {
             </>
             :
             <>
-              {/* <button className='light-btn'><Link href="/sign-in">Sign In</Link></button> */}
               <button className='colored-btn'><Link href="/register">Get Started</Link></button>
             </>
           }

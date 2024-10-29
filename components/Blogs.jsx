@@ -4,10 +4,12 @@ import BlogCard from './BlogCard';
 import Loading from './Loading';
 import SearchIcon from '@mui/icons-material/Search';
 import { useBlogContext } from './BlogsContext';
+import { useSession } from 'next-auth/react';
 
 const Blogs = ({ title, filterSaved = false }) => {
   const { blogs, loading } = useBlogContext();
   const [searchTerm, setSearchTerm] = useState('');
+  const { data: session } = useSession();
 
   const filteredBlogs = filterSaved ? blogs.filter(blog => blog.savedStatus) : blogs;
 

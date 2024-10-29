@@ -108,7 +108,7 @@ const page = () => {
                         onChange={(e) => setFile(e.target.files[0])}
                     />
                     <div className='flex justify-between'>
-                        <button type="button" className='rounded-full border border-red-600 bg-red-600 py-1.5 px-5 text-white transition-all hover:bg-red-700 hover:border-red-700 text-center text-sm flex items-center justify-center' onClick={() => router.push("/")}>
+                        <button type="button" className='rounded-full border border-red-600 bg-red-600 py-1.5 px-5 text-white transition-all hover:bg-red-700 hover:border-red-700 text-center text-sm flex items-center justify-center' onClick={() => router.back()}>
                             Cancel
                         </button>
                         <button 

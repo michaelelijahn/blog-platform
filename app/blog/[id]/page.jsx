@@ -7,7 +7,7 @@ import Header from '@/components/Header';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import Loading from '@/components/Loading';
 import { useSession } from 'next-auth/react';
-
+import { useBlogContext } from '@/components/BlogsContext';
 
 const Page = () => {
     const [loading, setLoading] = useState(true);
@@ -18,6 +18,7 @@ const Page = () => {
     const { id } = params;
     const router = useRouter();
     const { data: session } = useSession();
+    const { setRefetch } = useBlogContext();
     
     useEffect(() => {
         const fetchBlog = async () => {
@@ -56,6 +57,7 @@ const Page = () => {
         });
         
         if (response.ok) {
+          setRefetch(true);
           router.prefetch("/");
           router.push("/");
         } else {

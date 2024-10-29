@@ -16,7 +16,7 @@ const BlogCard = ({ id, title, author, image, date }) => {
   const { data: session, status } = useSession();
   const { blogs, updateBlogSavedStatus } = useBlogContext();
   const blog = blogs.find(b => b._id === id);
-  const saved = blog ? blog.savedStatus : false;
+  const saved = session && blog ? blog.savedStatus : false;
 
   const handleSave = async () => {
     if (status !== 'authenticated') {
