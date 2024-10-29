@@ -7,9 +7,7 @@ const AboutUsPage = () => {
   return (
     <div className="min-h-screen">
       <Header />
-      <main className="container mx-auto px-4 py-8">
-        {/* <h1 className="text-4xl font-bold text-center mb-8">About Blog</h1> */}
-        
+      <main className="container mx-auto px-4 py-8">        
         <section className="mb-12">
           <h2 className="text-2xl font-semibold mb-4">Our Mission</h2>
           <p className="text-lg">
@@ -21,7 +19,7 @@ const AboutUsPage = () => {
           <div className="md:w-1/2 mb-4 md:mb-0 md:pr-4">
             <Image
               src={assets.blog_pic_6}
-              alt="Person creating a vlog"
+              alt="Person creating a blog"
               width={500}
               height={300}
               className="rounded-lg shadow-lg"
