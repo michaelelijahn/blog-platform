@@ -24,6 +24,10 @@ const CreateBlogPage = () => {
         }));
     };
 
+    const formatBlogContent = (content) => {
+        return content.replace(/\n/g, "<br>");
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (isSubmitting || !session) return;
@@ -36,7 +40,8 @@ const CreateBlogPage = () => {
                 submitFormData.append('image', formData.file);
             }
             submitFormData.append('title', formData.title);
-            submitFormData.append('blog', formData.blog);
+            // submitFormData.append('blog', formData.blog);
+            submitFormData.append('blog', formatBlogContent(formData.blog));
             submitFormData.append('author', formData.author);
 
             const response = await fetch("/api/blog/new", {

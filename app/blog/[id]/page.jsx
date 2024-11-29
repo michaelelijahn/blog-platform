@@ -19,6 +19,8 @@ const Page = () => {
     const router = useRouter();
     const { data: session } = useSession();
     const { setRefetch } = useBlogContext();
+    const [summary, setSummary] = useState("");
+    const [isSummarizing, setIsSummarizing] = useState(false); 
     
     useEffect(() => {
         const fetchBlog = async () => {
@@ -32,7 +34,11 @@ const Page = () => {
 
                 const data = await response.json();
                 console.log(data);
-                setBlog(data);
+                const formattedBlog = data.blog.replace(/<br\s*\/?>/g, '\n');
+                setBlog({
+                    ...data,
+                    blog: formattedBlog
+                })
                 setIsCreator(session?.user?.id === data.creator);
             } catch (e) {
                 console.log(e);
@@ -70,8 +76,41 @@ const Page = () => {
       }
     }
 
+    const handleSummarize = async (e) => {
+        setIsSummarizing(true);
+        setSummary("");
+
+        try {
+            const response = await fetch("/api/openai", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    blogContent:blog.blog
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to generate summary");
+            }
+
+            const data = await response.json();
+            console.log(data);
+            setSummary(data.result);
+        } catch (error) {
+            console.error('Summary generation error:', e);
+            setError('Failed to generate summary');
+        } finally {
+            setIsSummarizing(false);
+        }
+    }
+
     if (loading) {
-        return <Loading/>
+        return  <div className='flex gap-12'>
+        <div className='w-[80vw] sm:w-[70vw] md:w-[45vw] lg:w-[24vw] h-44 rounded-2xl p-3 pt-4 shadow-md bg-gray-100 ml-3'>
+        </div>
+      </div>
     }
 
     if (error) {
@@ -82,6 +121,7 @@ const Page = () => {
         <>
             <Header />
             <div className='flex flex-col'>
+                <button className='flex text-gray-600 hover:text-gray-900 mb-4' onClick={() => router.back()}>back</button>
                 {blog.image && (
                     <Image 
                         alt='blog image' 
@@ -104,11 +144,13 @@ const Page = () => {
                         </div>
                     </div>
                 </div>
-                {renderParagraphs(blog.blog)}
+                { renderParagraphs(blog.blog)}
+                { renderParagraphs(summary)}
                 {(session?.user?.id && isCreator) && 
                     <div className='flex gap-2 my-8 font-semibold'>
                     <button className='colored-btn' onClick={() => { router.push(`/edit-blog/${id}`)}}>Edit Blog</button>
                     <button className='rounded-full border border-red-600 bg-red-600 py-1.5 px-5 text-white transition-all hover:bg-red-700 hover:border-red-700 text-center text-sm flex items-center justify-center' onClick={handleDeleteBlog}>Delete Blog</button>
+                    <button className='rounded-full border border-indigo-600 bg-indigo-600 py-1.5 px-5 text-white transition-all hover:bg-indigo-700 hover:border-indigo-700 text-center text-sm flex items-center justify-center' onClick={handleSummarize} disabled={isSummarizing}>{isSummarizing ? 'Summarizing...' : 'Summarize'}</button>
                     </div>
                 }
             </div>

@@ -10,7 +10,6 @@ export const useBlogContext = () => useContext(BlogContext);
 export const BlogProvider = ({ children }) => {
   const { data: session } = useSession();
   const [blogs, setBlogs] = useState([]);
-  // const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [refetch, setRefetch] = useState(false);
 
@@ -30,13 +29,10 @@ export const BlogProvider = ({ children }) => {
           headers: { 
             'Content-Type': 'application/json',
             'userId': session?.user?.id,
-            // 'email': session?.user?.email,
-            // 'name': session?.user?.name,
           },
         });
         const data = await response.json();
         setBlogs(data.blogs);
-        // setUserId(data.userId || null);
       } catch (error) {
         console.error("Error fetching blogs:", error);
       }
@@ -57,8 +53,7 @@ export const BlogProvider = ({ children }) => {
   return (
     <BlogContext.Provider value={{ 
       blogs, 
-      setBlogs, 
-      // userId, 
+      setBlogs,
       loading, 
       updateBlogSavedStatus,
       setRefetch
