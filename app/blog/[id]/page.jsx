@@ -99,8 +99,8 @@ const Page = () => {
             console.log(data);
             setSummary(data.result);
         } catch (error) {
-            console.error('Summary generation error:', e);
-            setError('Failed to generate summary');
+            alert('Summary generation error');
+            // setError('Failed to generate summary');
         } finally {
             setIsSummarizing(false);
         }
@@ -121,7 +121,6 @@ const Page = () => {
         <>
             <Header />
             <div className='flex flex-col'>
-                <button className='flex text-gray-600 hover:text-gray-900 mb-4' onClick={() => router.back()}>back</button>
                 {blog.image && (
                     <Image 
                         alt='blog image' 

@@ -66,7 +66,7 @@ const CreateBlogPage = () => {
     return (
         <div className='mt-20 w-full'>
             <h1 className='text-center text-4xl sm:text-left py-3 mb-10 sm:mb-16 font-extrabold sm:header-text blue-gradient'>Create Your Own Blog</h1>
-            <div className='mx-auto sm:m-0 w-[50vw] h-fit min-h-[80vh] glassmorphism'>
+            <div className='mx-auto sm:m-0 w-[90vw] md:w-[50vw] h-fit min-h-[80vh] glassmorphism'>
                 <form onSubmit={handleSubmit}>
                     <input 
                         name="title"
